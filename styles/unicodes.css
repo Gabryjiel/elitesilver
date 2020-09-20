@@ -1,0 +1,21 @@
+.trophy-gold, .trophy-silver, .trophy-bronze{
+    color: white;
+}
+
+.trophy-gold::before, .trophy-silver::before, .trophy-bronze::before{
+    filter: sepia(1) saturate(5);
+    content: "🏆";
+    position: relative;
+}
+
+.trophy-gold::before{
+    filter: sepia(1) saturate(5);
+}
+
+.trophy-silver::before{
+    filter: grayscale();
+}
+
+.trophy-bronze::before{
+    filter: brightness(0.5) hue-rotate(-40deg);
+}

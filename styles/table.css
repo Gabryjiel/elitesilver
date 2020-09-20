@@ -1,0 +1,93 @@
+@media only screen and (max-width: 767px){
+    .table-container{
+        font-size: 12px;
+    }
+}
+
+.table-container{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 90%;
+}
+
+.table-header{
+    display: flex;
+    justify-content: space-around;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    background-color: bisque;
+    border: 1px solid burlywood;
+}
+
+.table-header span{
+    text-align: start;
+    text-indent: 10px;
+    flex-basis: 0;
+    flex-grow: 1;
+    font-weight: bold;
+}
+
+.table-body{
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.table-body::-webkit-scrollbar{
+    display: none;
+}
+
+.table-row-flexed{
+    flex-grow: 2 !important;
+}
+
+.table-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    border-bottom: 1px;
+    border-style: solid;
+    border-color: black;
+}
+
+.table-row:hover{
+    background-color: aliceblue;
+    cursor: pointer;
+}
+
+.table-row div{
+    text-align: start;
+    text-indent: 10px;
+    flex-basis: 0;
+    flex-grow: 1;
+    overflow-x: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.table-row div::-webkit-scrollbar{
+    display: none;
+}
+
+.table-hoverable{
+    display: inline-block !important;
+}
+
+.table-hoverable:hover, .table-hoverable:active{
+    color: gray;
+    cursor: pointer;
+}
+
+.table-element span{
+    display: flex;
+    align-content: center;
+    padding: 10px 0;
+}
+
+.table-element, .table-header span{
+    border: 1px solid black;
+}
