@@ -3,6 +3,7 @@ import React from 'react';
 
 import Template from '../../../src/components/style/Template';
 import TournamentTabs from '../../../src/components/tournaments/TournamentTabs';
+import Footer from '../../../src/components/utils/Footer';
 
 export default function brackets({data, id}: Props){
 
@@ -12,10 +13,22 @@ export default function brackets({data, id}: Props){
         router.push(path);
     }
 
+    const footerData = {
+        first: {text: 'Schemat'},
+        second: {text: 'data.title', href: `/tournaments/${id}`},
+        third: {text: ''},
+        tabs: [
+            {text: 'Info', href: `/tournaments/${id}`}, 
+            {text: 'Schemat'},
+            {text: 'Mecze', href: `/tournaments/${id}/matches`},
+            {text: 'Uczestnicy', href: `/tournaments/${id}/participants`}
+        ]
+    }
+
     return(
         <Template>
-            <TournamentTabs path={router.asPath} goTo={goTo} id={id}/>
             {JSON.stringify(data)}
+            <Footer data={footerData} goTo={goTo}/>
         </Template>
     )
 }

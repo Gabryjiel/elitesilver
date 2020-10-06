@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import Template from '../../../src/components/style/Template';
-import TournamentTabs from '../../../src/components/tournaments/TournamentTabs';
+import Footer from '../../../src/components/utils/Footer';
 
 export default function matchesTable({matches, id}: Props){
 
@@ -13,9 +13,20 @@ export default function matchesTable({matches, id}: Props){
         router.push(path);
     }
 
+    const footerData = {
+        first: {text: 'Mecze'},
+        second: {text: 'data.title', href: `/tournaments/${id}`},
+        third: {text: ''},
+        tabs: [
+            {text: 'Info', href: `/tournaments/${id}`}, 
+            {text: 'Schemat', href: `/tournaments/${id}/brackets`},
+            {text: 'Mecze'},
+            {text: 'Uczestnicy', href: `/tournaments/${id}/participants`}
+        ]
+    }
+
     return(
         <Template>
-            <TournamentTabs path={router.asPath} goTo={goTo} id={id}/>
 
             <div id="matches" className="table-container">
                 <div className="table-header">
@@ -45,6 +56,8 @@ export default function matchesTable({matches, id}: Props){
                     })}
                 </div>
             </div>
+
+            <Footer data={footerData} goTo={goTo}/>
         </Template>
     )
 }
@@ -56,7 +69,7 @@ export async function getStaticPaths(){
 }
 
 export async function getStaticProps({params}:any): Promise<any>{
-  const res = await (await fetch(`http://localhost:3001/api/tournaments/${params.tId}/brackets`)).json();
+  const res = await (await fetch(`http://localhost:3001/api/tournaments/${params.tId}/matches`)).json();
 
   return{
     props: {

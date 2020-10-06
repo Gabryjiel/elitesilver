@@ -3,6 +3,7 @@ import React from 'react';
 
 import Template from '../../../src/components/style/Template';
 import TournamentTabs from '../../../src/components/tournaments/TournamentTabs';
+import Footer from '../../../src/components/utils/Footer';
 
 export default function participantsTable({participants, id}: Props){
 
@@ -13,9 +14,20 @@ export default function participantsTable({participants, id}: Props){
         router.push(path);
     }
 
+    const footerData = {
+        first: {text: 'Uczestnicy'},
+        second: {text: 'data.title', href: `/tournaments/${id}`},
+        third: {text: ''},
+        tabs: [
+            {text: 'Info', href: `/tournaments/${id}`}, 
+            {text: 'Schemat', href: `/tournaments/${id}/brackets`},
+            {text: 'Mecze', href: `/tournaments/${id}/matches`},
+            {text: 'Uczestnicy'}
+        ]
+    }
+
     return(
         <Template>
-            <TournamentTabs path={router.asPath} goTo={goTo} id={id}/>
 
             <div id="participants" className="table-container">
                 <div className="table-header">
@@ -42,6 +54,9 @@ export default function participantsTable({participants, id}: Props){
                     })}
                 </div>
             </div>
+
+            <Footer data={footerData} goTo={goTo}/>
+
         </Template>
     )
 }
