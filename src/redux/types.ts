@@ -1,0 +1,1 @@
+export const FOOTER_SET_TITLE = 'FOOTER_SET_TITLE';
