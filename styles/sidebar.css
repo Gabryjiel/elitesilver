@@ -1,0 +1,42 @@
+.sidebar-icon{
+    position: relative;
+    border: 10px solid black;
+    border-radius: 0%;
+    background-color: black;
+    color: yellow;
+    margin-left: 10px;
+    margin-top: 10px;
+    place-items: center;
+    display: flex;
+    width: min-content;
+    margin-bottom: 10px;
+}
+
+.sidebar-icon:hover{
+    background-color: grey;
+    border-color: grey;
+    cursor: pointer;
+}
+
+.sidebar{
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-content{
+    background-color: black;
+}
+
+.sidebar-content div{
+    background-color: black;
+    color: yellow;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    padding: 10px 0px;
+    text-indent: 10px;
+    margin: 5px 0px;
+}

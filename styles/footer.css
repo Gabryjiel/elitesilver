@@ -1,0 +1,111 @@
+.footer-container{
+    position: absolute;
+    display: flex;
+    height: 100px;
+    width: 100%;
+    background-color: bisque;
+    z-index: 10;
+    bottom: 0;
+    left: 0;
+    border-top: 1px solid black;
+}
+
+.footer-main{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 30vw;
+    border-right: 1px solid black;
+    align-items: center;
+}
+
+.footer-main-logo{
+    min-width: 25%;
+    max-width: 25%;
+    height: 70%;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.footer-main-logo img{
+    display: block;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.footer-main-bread{
+    display: flex;
+    flex-direction: column;
+    width: calc(70%);
+    text-align: end;
+}
+
+.footer-main-title, .footer-main-subtitle{
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.footer-main-title:hover, .footer-main-subtitle:hover{
+    color: grey; 
+    cursor: pointer;
+}
+
+.footer-main-title{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.footer-main-subtitle{
+    font-size: medium;
+}
+
+.footer-main-description{
+    font-size: small;
+}
+
+.footer-tabs{
+    display: flex;
+    justify-content: center;
+    width: max-content;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.footer-tabs div{
+    display: flex;
+    place-items: center;
+    place-content: center;
+    flex-basis: 0;
+    flex-grow: 1;
+    width: 10vw;
+    font-size: large;
+}
+
+.footer-tabs div:not(.footer-tabs-active):hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.footer-tabs-active{
+    color: red;
+    background-color: bisque !important;
+}
+
+.footer-nav{
+    display: flex;
+    width: 30vw;
+    place-content: center;
+    place-items: center;
+    text-align: center;
+}
+
+.footer-nav div{
+    flex-basis: 0;
+    flex-grow: 1;
+}
