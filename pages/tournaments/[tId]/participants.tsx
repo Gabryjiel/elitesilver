@@ -1,11 +1,18 @@
 import { useRouter } from 'next/router';
 import React from 'react';
+import { connect } from 'react-redux';
+import { wrapper } from '../../../src/redux/store';
 
-import Template from '../../../src/components/style/Template';
-import TournamentTabs from '../../../src/components/tournaments/TournamentTabs';
-import Footer from '../../../src/components/utils/Footer';
+import { TournamentTabs } from '../../../src/components/footer/FooterTabsDefinitions';
 
-export default function participantsTable({participants, id}: Props){
+import * as FooterActions from '../../../src/redux/actions/footerActions'
+import * as TournamentPanelActions from '../../../src/redux/actions/tournamentPanelActions';
+
+import AppContainer from '../../../src/components/style/AppContainer';
+import TournamentPanel from '../../../src/components/tournaments/TournamentPanel';
+import Footer from '../../../src/components/footer/Footer';
+
+function participants({participants, id}: Props){
 
     const router = useRouter();
     const classes = ['trophy-gold', 'trophy-silver', 'trophy-bronze'];
@@ -14,20 +21,10 @@ export default function participantsTable({participants, id}: Props){
         router.push(path);
     }
 
-    const footerData = {
-        first: {text: 'Uczestnicy'},
-        second: {text: 'data.title', href: `/tournaments/${id}`},
-        third: {text: ''},
-        tabs: [
-            {text: 'Info', href: `/tournaments/${id}`}, 
-            {text: 'Schemat', href: `/tournaments/${id}/brackets`},
-            {text: 'Mecze', href: `/tournaments/${id}/matches`},
-            {text: 'Uczestnicy'}
-        ]
-    }
-
     return(
-        <Template>
+        <AppContainer>
+
+            <TournamentPanel />
 
             <div id="participants" className="table-container">
                 <div className="table-header">
@@ -55,9 +52,9 @@ export default function participantsTable({participants, id}: Props){
                 </div>
             </div>
 
-            <Footer data={footerData} goTo={goTo}/>
+            <Footer />
 
-        </Template>
+        </AppContainer>
     )
 }
 
@@ -67,18 +64,33 @@ export async function getStaticPaths(){
     return { paths, fallback: false};
 }
 
-export async function getStaticProps({params}:any): Promise<any>{
-  const res = await (await fetch(`http://localhost:3001/api/tournaments/${params.tId}/participants`)).json();
+export const getStaticProps = wrapper.getStaticProps(async ({store, params}:any) => {
+    const res = await (await fetch(`http://localhost:3001/api/tournaments/${params.tId}/participants`)).json();
 
-  return{
-    props: {
-        participants: res,
-        id: params.tId
+    const tournamentInfo = await (await fetch(`http://localhost:3001/api/tournaments/${params.tId}`)).json();
+
+    store.dispatch(FooterActions.setTitle({content: 'Uczestnicy' , href: ''}));
+    store.dispatch(FooterActions.setSubtitle({content: tournamentInfo.name , href: `/tournaments/${tournamentInfo.id}`}));
+    store.dispatch(FooterActions.setDescription({content: 'Turnieje', href: '/tournaments'}))
+    store.dispatch(FooterActions.setTabs(TournamentTabs(params.tId)));
+
+    //store.dispatch(TournamentPanelActions.setImagePath(''));
+    store.dispatch(TournamentPanelActions.setTitle(tournamentInfo.name));
+    store.dispatch(TournamentPanelActions.setFirstPlace('Firster'));
+    store.dispatch(TournamentPanelActions.setSecondPlace('Seconder'));
+    store.dispatch(TournamentPanelActions.setThirdPlace('Thirder'));
+
+    return{
+        props: {
+            participants: res,
+            id: params.tId
+        }
     }
-  }
-}
+})
 
 type Props = {
     participants: Array<any>,
     id: number
 }
+
+export default connect()(participants);

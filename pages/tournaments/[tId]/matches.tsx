@@ -1,10 +1,17 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import { connect } from 'react-redux';
+import { wrapper } from '../../../src/redux/store';
 
-import Template from '../../../src/components/style/Template';
-import Footer from '../../../src/components/utils/Footer';
+import { TournamentTabs } from '../../../src/components/footer/FooterTabsDefinitions';
 
-export default function matchesTable({matches, id}: Props){
+import * as FooterActions from '../../../src/redux/actions/footerActions'
+import * as TournamentPanelActions from '../../../src/redux/actions/tournamentPanelActions';
+
+import AppContainer from '../../../src/components/style/AppContainer';
+import TournamentPanel from '../../../src/components/tournaments/TournamentPanel';
+import Footer from '../../../src/components/footer/Footer';
+
+function matches({matches, id}: Props){
 
     const router = useRouter();
 
@@ -13,20 +20,9 @@ export default function matchesTable({matches, id}: Props){
         router.push(path);
     }
 
-    const footerData = {
-        first: {text: 'Mecze'},
-        second: {text: 'data.title', href: `/tournaments/${id}`},
-        third: {text: ''},
-        tabs: [
-            {text: 'Info', href: `/tournaments/${id}`}, 
-            {text: 'Schemat', href: `/tournaments/${id}/brackets`},
-            {text: 'Mecze'},
-            {text: 'Uczestnicy', href: `/tournaments/${id}/participants`}
-        ]
-    }
-
     return(
-        <Template>
+        <AppContainer>
+            <TournamentPanel />
 
             <div id="matches" className="table-container">
                 <div className="table-header">
@@ -57,8 +53,8 @@ export default function matchesTable({matches, id}: Props){
                 </div>
             </div>
 
-            <Footer data={footerData} goTo={goTo}/>
-        </Template>
+            <Footer />
+        </AppContainer>
     )
 }
 
@@ -68,18 +64,33 @@ export async function getStaticPaths(){
     return { paths, fallback: false};
 }
 
-export async function getStaticProps({params}:any): Promise<any>{
-  const res = await (await fetch(`http://localhost:3001/api/tournaments/${params.tId}/matches`)).json();
+export const getStaticProps = wrapper.getStaticProps(async ({store, params}:any) => {
+    const res = await (await fetch(`http://localhost:3001/api/tournaments/${params.tId}/matches`)).json();
 
-  return{
-    props: {
-        matches: res,
-        id: params.tId
+    const tournamentInfo = await (await fetch(`http://localhost:3001/api/tournaments/${params.tId}`)).json();
+
+    store.dispatch(FooterActions.setTitle({content: 'Mecze' , href: `/tournaments/${tournamentInfo.id}/matches`}));
+    store.dispatch(FooterActions.setSubtitle({content: tournamentInfo.name , href: `/tournaments/${tournamentInfo.id}`}));
+    store.dispatch(FooterActions.setDescription({content: 'Turnieje', href: '/tournaments'}))
+    store.dispatch(FooterActions.setTabs(TournamentTabs(params.tId)));
+
+    //store.dispatch(TournamentPanelActions.setImagePath(''));
+    store.dispatch(TournamentPanelActions.setTitle(tournamentInfo.name));
+    store.dispatch(TournamentPanelActions.setFirstPlace('Firster'));
+    store.dispatch(TournamentPanelActions.setSecondPlace('Seconder'));
+    store.dispatch(TournamentPanelActions.setThirdPlace('Thirder'));
+    
+    return{
+        props: {
+            matches: res,
+            id: params.tId
+        }
     }
-  }
-}
+});
 
 type Props = {
     matches: Array<any>,
     id: number
 }
+
+export default connect()(matches);

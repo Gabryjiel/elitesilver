@@ -1,5 +1,5 @@
 import { AppProps } from 'next/app';
-import { wrapper } from '../src/redux/superStore';
+import { wrapper } from '../src/redux/store';
 
 import '../styles/main.css'
 

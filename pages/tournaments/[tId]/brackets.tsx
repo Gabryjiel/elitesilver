@@ -1,35 +1,24 @@
-import { useRouter } from 'next/router';
 import React from 'react';
+import { connect } from 'react-redux';
+import { wrapper } from '../../../src/redux/store';
 
-import Template from '../../../src/components/style/Template';
-import TournamentTabs from '../../../src/components/tournaments/TournamentTabs';
-import Footer from '../../../src/components/utils/Footer';
+import Footer from '../../../src/components/footer/Footer';
+import { TournamentTabs } from '../../../src/components/footer/FooterTabsDefinitions';
 
-export default function brackets({data, id}: Props){
+import * as FooterActions from '../../../src/redux/actions/footerActions';
+import * as TournamentPanelActions from '../../../src/redux/actions/tournamentPanelActions';
 
-    const router = useRouter();
+import AppContainer from '../../../src/components/style/AppContainer';
+import TournamentPanel from '../../../src/components/tournaments/TournamentPanel';
 
-    const goTo = (path: string) => {
-        router.push(path);
-    }
-
-    const footerData = {
-        first: {text: 'Schemat'},
-        second: {text: 'data.title', href: `/tournaments/${id}`},
-        third: {text: ''},
-        tabs: [
-            {text: 'Info', href: `/tournaments/${id}`}, 
-            {text: 'Schemat'},
-            {text: 'Mecze', href: `/tournaments/${id}/matches`},
-            {text: 'Uczestnicy', href: `/tournaments/${id}/participants`}
-        ]
-    }
+function brackets({data, tournamentPanelData, id}: Props){
 
     return(
-        <Template>
+        <AppContainer>
+            <TournamentPanel />
             {JSON.stringify(data)}
-            <Footer data={footerData} goTo={goTo}/>
-        </Template>
+            <Footer />
+        </AppContainer>
     )
 }
 
@@ -39,18 +28,33 @@ export async function getStaticPaths(){
     return { paths, fallback: false};
 }
 
-export async function getStaticProps({params}:any): Promise<any>{
-  const res = await (await fetch(`http://localhost:3001/api/tournaments/${params.tId}/brackets`)).json();
+export const getStaticProps = wrapper.getStaticProps(async ({store, params}:any) => {
+    const res = await (await fetch(`http://localhost:3001/api/tournaments/${params.tId}/brackets`)).json();
+    const tournamentInfo = await (await fetch(`http://localhost:3001/api/tournaments/${params.tId}`)).json();
 
-  return{
-    props: {
-        data: res,
-        id: params.tId
+    store.dispatch(FooterActions.setTitle({content: 'Schemat' , href: ''}));
+    store.dispatch(FooterActions.setSubtitle({content: tournamentInfo.name , href: `/tournaments/${tournamentInfo.id}`}));
+    store.dispatch(FooterActions.setDescription({content: 'Turnieje', href: '/tournaments'}))
+    store.dispatch(FooterActions.setTabs(TournamentTabs(params.tId)));
+
+    //store.dispatch(TournamentPanelActions.setImagePath(''));
+    store.dispatch(TournamentPanelActions.setTitle(tournamentInfo.name));
+    store.dispatch(TournamentPanelActions.setFirstPlace('Firster'));
+    store.dispatch(TournamentPanelActions.setSecondPlace('Seconder'));
+    store.dispatch(TournamentPanelActions.setThirdPlace('Thirder'));
+
+    return{
+        props: {
+            data: res,
+            id: params.tId
+        }
     }
-  }
-}
+});
 
 type Props = {
     data: Array<any>,
-    id: number
+    id: number,
+    tournamentPanelData: any
 }
+
+export default connect()(brackets);
