@@ -38,9 +38,9 @@ export default connect()(MatchesIndex);
 export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:any) => {
     const res = await (await fetch(`http://localhost:3001/api/matches`)).json();
 
-    store.dispatch(FooterActions.setTitle({content: 'Info' , href: ''}));
-    store.dispatch(FooterActions.setSubtitle({content: '' , href: ``}));
-    store.dispatch(FooterActions.setDescription({content: '' , href: ``}));
+    store.dispatch(FooterActions.setTitle({content: ' ' , href: ''}));
+    store.dispatch(FooterActions.setSubtitle({content: 'Mecze' , href: ``}));
+    store.dispatch(FooterActions.setDescription({content: 'Przeglądaj' , href: `/tournaments`}));
     store.dispatch(FooterActions.setTabs(TournamentIndex));
 
     return{
