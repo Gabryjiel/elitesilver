@@ -1,7 +1,7 @@
 import React from 'react';
 import CanvasLine from "./CanvasLine";
 
-export default function Bracket({data}){
+export default function Bracket({data}: Props){
 
     return(
         <div className="list-brackets">
@@ -74,3 +74,12 @@ export default function Bracket({data}){
             </div>
     )
 };
+
+type Props = {
+    data: Array<Stage>
+}
+
+type Stage = {
+    matches: Array<any>
+    stage: string
+}

@@ -32,8 +32,7 @@ function matches({matches, id}: Props){
                     <span>Faza</span>
                 </div>
                 <div className="table-body">
-                    {matches.map(match => {
-                        return(
+                    {matches.map(match => 
                             <div className="table-row" key={`${match.player1} vs ${match.player2} in ${match.stage}`} onClick={(event) => goTo(`/matches/${match.id}`, event)}>
                                 <div className="table-element table-row-flexed">
                                     <span onClick={(event) => goTo(`/participants/${match.player1id}`, event)} className="table-hoverable">{match.player1}</span>
@@ -48,8 +47,7 @@ function matches({matches, id}: Props){
                                     <span>{match.stage}</span>
                                 </div>
                             </div>
-                        );
-                    })}
+                    )}
                 </div>
             </div>
 

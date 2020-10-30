@@ -9,10 +9,10 @@ function Table({header, rows, goTo}: TableProps){
                 {header.map(item => <div key={item} className="table-header-item">{item}</div>)}
             </div>
 
-            <div className="table-rows">
+            <div className="table-body">
                 {rows.map(row => 
                     <div key={row.content[0]} className="table-row" onClick={event => goTo(row.href, event)}>
-                        {row.content.map(item => <div key={item} className="table-row-item">{item}</div>)}
+                        {row.content.map(item => <div key={item} className="table-element table-row-flexed">{item}</div>)}
                     </div>  
                 )}
             </div>
