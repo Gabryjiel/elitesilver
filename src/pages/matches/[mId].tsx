@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { wrapper } from '../../src/redux/store';
+import { wrapper } from '../../redux/store';
 
-import * as FooterActions from '../../src/redux/actions/footerActions'
-import { MatchesTabs } from '../../src/components/footer/FooterTabsDefinitions';
+import * as FooterActions from '../../redux/actions/footerActions'
+import { MatchesTabs } from '../../components/footer/FooterTabsDefinitions';
 
-import AppContainer from '../../src/components/style/AppContainer';
-import Footer from '../../src/components/footer/Footer';
+import AppContainer from '../../components/style/AppContainer';
+import Footer from '../../components/footer/Footer';
 
 function Match(){
 

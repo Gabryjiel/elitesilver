@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { wrapper } from '../src/redux/store';
-import * as FooterActions from '../src/redux/actions/footerActions'
+import { wrapper } from '../redux/store';
+import * as FooterActions from '../redux/actions/footerActions'
 
-import Footer from '../src/components/footer/Footer';
-import AppContainer from '../src/components/style/AppContainer';
+import Footer from '../components/footer/Footer';
+import AppContainer from '../components/style/AppContainer';
 
 function Home() {
     return (

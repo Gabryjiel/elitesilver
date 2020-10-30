@@ -1,13 +1,13 @@
 import React, { MouseEvent } from 'react';
 import { connect } from 'react-redux';
-import { wrapper } from '../../src/redux/store';
+import { wrapper } from '../../redux/store';
 
-import * as FooterActions from '../../src/redux/actions/footerActions'
-import { TournamentIndex } from '../../src/components/footer/FooterTabsDefinitions';
+import * as FooterActions from '../../redux/actions/footerActions'
+import { TournamentIndex } from '../../components/footer/FooterTabsDefinitions';
 
-import Footer from "../../src/components/footer/Footer";
-import AppContainer from "../../src/components/style/AppContainer";
-import Table from '../../src/components/utils/Table';
+import Footer from "../../components/footer/Footer";
+import AppContainer from "../../components/style/AppContainer";
+import Table from '../../components/utils/Table';
 import { useRouter } from 'next/router';
 
 function MatchesIndex({data}: Props){

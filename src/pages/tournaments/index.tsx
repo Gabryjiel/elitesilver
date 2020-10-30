@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import { wrapper } from '../../src/redux/store';
-import * as FooterActions from '../../src/redux/actions/footerActions'
+import { wrapper } from '../../redux/store';
+import * as FooterActions from '../../redux/actions/footerActions'
 
-import Footer from '../../src/components/footer/Footer';
-import AppContainer from '../../src/components/style/AppContainer';
-import TournamentsList from '../../src/components/tournaments/TournamentsList';
+import Footer from '../../components/footer/Footer';
+import AppContainer from '../../components/style/AppContainer';
+import TournamentsList from '../../components/tournaments/TournamentsList';
 
-import { TournamentIndex } from '../../src/components/footer/FooterTabsDefinitions';
+import { TournamentIndex } from '../../components/footer/FooterTabsDefinitions';
 
 function Tournaments({data}: Props){
 
@@ -32,7 +32,8 @@ export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:an
     return{
       props: {
         data: res
-      }
+      },
+      revalidate: 1
     }
 });
 

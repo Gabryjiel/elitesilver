@@ -1,15 +1,15 @@
 import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
-import { wrapper } from '../../../src/redux/store';
+import { wrapper } from '../../../redux/store';
 
-import { TournamentTabs } from '../../../src/components/footer/FooterTabsDefinitions';
+import { TournamentTabs } from '../../../components/footer/FooterTabsDefinitions';
 
-import * as FooterActions from '../../../src/redux/actions/footerActions'
-import * as TournamentPanelActions from '../../../src/redux/actions/tournamentPanelActions';
+import * as FooterActions from '../../../redux/actions/footerActions'
+import * as TournamentPanelActions from '../../../redux/actions/tournamentPanelActions';
 
-import AppContainer from '../../../src/components/style/AppContainer';
-import TournamentPanel from '../../../src/components/tournaments/TournamentPanel';
-import Footer from '../../../src/components/footer/Footer';
+import AppContainer from '../../../components/style/AppContainer';
+import TournamentPanel from '../../../components/tournaments/TournamentPanel';
+import Footer from '../../../components/footer/Footer';
 
 function matches({matches, id}: Props){
 
