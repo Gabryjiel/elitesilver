@@ -9,6 +9,7 @@ import Footer from "../../components/footer/Footer";
 import AppContainer from "../../components/style/AppContainer";
 import Table from '../../components/utils/Table';
 import { useRouter } from 'next/router';
+import fetcher from '../../utilities/fetcher';
 
 function MatchesIndex({data}: Props){
 
@@ -36,7 +37,9 @@ function MatchesIndex({data}: Props){
 export default connect()(MatchesIndex);
 
 export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:any) => {
-    const res = await (await fetch(`http://localhost:3001/api/matches`)).json();
+    //const res = await (await fetch(`http://localhost:3001/api/matches`)).json();
+
+    const result = await fetcher('matches/getAll');
 
     store.dispatch(FooterActions.setTitle({content: ' ' , href: ''}));
     store.dispatch(FooterActions.setSubtitle({content: 'Mecze' , href: ``}));
@@ -45,7 +48,7 @@ export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:an
 
     return{
       props: {
-        data: res
+        data: result
       }
     }
 });

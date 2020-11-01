@@ -11,6 +11,7 @@ import * as TournamentPanelActions from '../../../redux/actions/tournamentPanelA
 import AppContainer from '../../../components/style/AppContainer';
 import TournamentPanel from '../../../components/tournaments/TournamentPanel';
 import Footer from '../../../components/footer/Footer';
+import fetcher from '../../../utilities/fetcher';
 
 function Tournaments({data, id}: Props) {
 
@@ -47,15 +48,14 @@ function Tournaments({data, id}: Props) {
 export default connect()(Tournaments);
 
 export async function getStaticPaths(){
-    const res: Array<any> = await (await fetch('http://localhost:3001/api/tournaments')).json();
-    const paths = res.map(tournament => `/tournaments/${tournament.id.toString()}`);
-
-    return { paths, fallback: true };
+    const result: Array<any> = await fetcher('tournaments/getAll');
+    const paths = result.map(item => `/tournaments/${item.id.toString()}/brackets`);
+    return { paths, fallback: true};
 }
 
 export const getStaticProps = wrapper.getStaticProps(async ({store, params}:any) => {
     const res = await (await fetch(`http://localhost:3001/api/tournaments/${params.tId}/brackets`)).json();
-    const tournamentInfo = await (await fetch(`http://localhost:3001/api/tournaments/${params.tId}`)).json();
+    const tournamentInfo = await fetcher(`tournaments/getById?id=${params.tId}`);
 
     store.dispatch(FooterActions.setTitle({content: 'Info' , href: ''}));
     store.dispatch(FooterActions.setSubtitle({content: tournamentInfo.name , href: `/tournaments/${tournamentInfo.id}`}));

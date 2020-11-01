@@ -7,6 +7,7 @@ import AppContainer from '../../components/style/AppContainer';
 import TournamentsList from '../../components/tournaments/TournamentsList';
 
 import { TournamentIndex } from '../../components/footer/FooterTabsDefinitions';
+import fetcher from '../../utilities/fetcher';
 
 function Tournaments({data}: Props){
 
@@ -22,7 +23,7 @@ function Tournaments({data}: Props){
 export default connect()(Tournaments);
 
 export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:any) => {
-    const res = await (await fetch(`http://localhost:3001/api/tournaments`)).json();
+    const result = await fetcher('tournaments/getAll');
 
     store.dispatch(FooterActions.setTitle({content: ' ' , href: ''}));
     store.dispatch(FooterActions.setSubtitle({content: 'Turnieje' , href: ``}));
@@ -31,7 +32,7 @@ export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:an
 
     return{
       props: {
-        data: res
+        data: result
       },
       revalidate: 1
     }

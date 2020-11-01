@@ -9,6 +9,7 @@ import Footer from "../../components/footer/Footer";
 import AppContainer from "../../components/style/AppContainer";
 import Table from '../../components/utils/Table';
 import { useRouter } from 'next/router';
+import fetcher from '../../utilities/fetcher';
 
 function ChampionsIndex({data}: Props){
 
@@ -36,8 +37,8 @@ function ChampionsIndex({data}: Props){
 export default connect()(ChampionsIndex);
 
 export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:any) => {
-    const res = await (await fetch(`http://localhost:3001/api/champions`)).json();
-
+    const result = await fetcher('champions/getAll');
+    
     store.dispatch(FooterActions.setTitle({content: ' ' , href: ''}));
     store.dispatch(FooterActions.setSubtitle({content: 'Postacie' , href: ''}));
     store.dispatch(FooterActions.setDescription({content: 'Przeglądaj' , href: '/tournaments'}));
@@ -45,7 +46,7 @@ export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:an
 
     return{
       props: {
-        data: res
+        data: result
       }
     }
 });

@@ -9,6 +9,7 @@ import Footer from "../../components/footer/Footer";
 import AppContainer from "../../components/style/AppContainer";
 import Table from '../../components/utils/Table';
 import { useRouter } from 'next/router';
+import fetcher from '../../utilities/fetcher';
 
 function ParticipantsIndex({data}: Props){
 
@@ -36,7 +37,7 @@ function ParticipantsIndex({data}: Props){
 export default connect()(ParticipantsIndex);
 
 export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:any) => {
-    const res = await (await fetch(`http://localhost:3001/api/participants`)).json();
+    const result = await fetcher('participants/getAll');
 
     store.dispatch(FooterActions.setTitle({content: ' ' , href: ''}));
     store.dispatch(FooterActions.setSubtitle({content: 'Uczestnicy' , href: ``}));
@@ -45,7 +46,7 @@ export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:an
 
     return{
       props: {
-        data: res
+        data: result
       }
     }
 });
