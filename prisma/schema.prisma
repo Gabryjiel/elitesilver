@@ -54,8 +54,8 @@ model matches_players{
     playerId Int
     player players @relation(fields: [playerId], references: [id])
     cs Int @default(0)
-    championId Int
-    champion champions @relation(fields: [championId], references: [id])
+    championId Int?
+    champion champions? @relation(fields: [championId], references: [id])
     side Boolean @default(false)
 
     @@id([matchId, playerId])
@@ -69,19 +69,29 @@ model bans{
     championId Int
     champion champions @relation(fields: [championId], references: [id])
     
-    @@id([matchId, playerId])
+    @@id([matchId, playerId, championId])
 }
 
 model players{
     id Int @id @default(autoincrement())
     name String
     team String?
+    rankId Int?
+    rank ranks? @relation(fields: [rankId], references: [id])
     userId Int
     user users @relation(fields: [userId], references: [id])
 }
 
 model users{
     id Int @id @default(autoincrement())
+    name String @unique
+    password String?
+    email String?
+}
+
+model ranks{
+    id Int @id @default(autoincrement())
     name String
-    pass String
+    badge String?
+    image String?
 }

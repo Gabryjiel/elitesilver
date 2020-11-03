@@ -10,30 +10,18 @@ function uniqueArray(array: Array<any>, property: string){
 const prisma = new PrismaClient();
 
 export default async function main(req: NextApiRequest, res: NextApiResponse){
-    const id = req.query.tId;
+    const id = Number(req.query.tId);
 
-    const tournaments = await prisma.matches.findMany({
-        select: {
-            p1Participants: {
-                select: {
-                    id: true, 
-                    name: true
-                }
-            },
-            p2Participants: {
-                select: {
-                    id: true,
-                    name: true
-                }
-            }
-        },
-        where: {
-            tournamentId: Number(id)
-        }
-    });
+    const matches = await prisma.matches.findMany({
+        include: {matches_players: {select: {player: true}}},
+        where: {tournamentId: id}
+    })
 
-    const map = tournaments.map(match => [match.p1Participants, match.p2Participants]).flat();
-    res.json(uniqueArray(map, 'name'));
+    const map = matches.map(match => match.matches_players).flat().map(player => player.player);
+    const unique = uniqueArray(map, 'id')
+
+    res.json(unique);
+    res.end();
 
     console.log("tournaments/:id/participants with id", id);
 };
