@@ -5,12 +5,10 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export default async function method(req: NextApiRequest, res: NextApiResponse){
-    const id = req.query.id;
+    const result = await prisma.waywins.findMany();
 
-    const result = await prisma.champions.findOne({
-        where: {id: Number(id)}
-    });
     res.json(result);
+    res.end();
 
-    console.log("champions/getById with id", id);
+    console.log("waywins");
 };

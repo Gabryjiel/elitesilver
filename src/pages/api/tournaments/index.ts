@@ -7,4 +7,6 @@ const prisma = new PrismaClient();
 export default async function main(req: NextApiRequest, res: NextApiResponse){
     const tournaments = await prisma.tournaments.findMany();
     res.json(tournaments);
+
+    console.log('tournaments');
 };

@@ -1,10 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { PrismaClient } from '@prisma/client';
+import bool2bin from '../../../../utilities/bool2bin';
 
 const prisma = new PrismaClient();
-
-const bool2bin = (boolean: boolean) => boolean ? 1 : 0;
 
 const groupBy = (array: Array<any>, keyGetter: (item: any) => any) => {
     const map = new Map();
@@ -44,7 +43,10 @@ export default async function main(req: NextApiRequest, res: NextApiResponse){
             waywin: true,
             stage: true
         },
-        where: {tournamentId: Number(id)}
+        where: {tournamentId: Number(id)},
+        orderBy: {
+            id: 'asc'
+        }
     });
 
     const response = result.map(item => ({
@@ -67,7 +69,7 @@ export default async function main(req: NextApiRequest, res: NextApiResponse){
             id: item.stageId,
             name: item.stage.name
         }
-    })).sort((a, b) => a.id - b.id);
+    }))
 
     res.json(response);
     res.end();
