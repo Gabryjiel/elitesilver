@@ -7,94 +7,81 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model champions {
-  id                                  Int     @id @default(autoincrement())
-  name                                String  @default("")
-  games_championsTogames_p1ChampionId games[] @relation("championsTogames_p1ChampionId")
-  games_championsTogames_p2ChampionId games[] @relation("championsTogames_p2ChampionId")
+model champions{
+    id Int @id @default(autoincrement())
+    name String
+    avatar String?
+    profile String?
+    splash String?
 }
 
-model games {
-  id                                      Int        @id @default(autoincrement())
-  player1Won                              Boolean
-  blueSideWon                             Boolean
-  p1CS                                    Int?
-  p2CS                                    Int?
-  duration                                Int?
-  matchId                                 Int?
-  p1ChampionId                            Int?
-  p2ChampionId                            Int?
-  waywinId                                Int?
-  matches                                 matches?   @relation(fields: [matchId], references: [id])
-  champions_championsTogames_p1ChampionId champions? @relation("championsTogames_p1ChampionId", fields: [p1ChampionId], references: [id])
-  champions_championsTogames_p2ChampionId champions? @relation("championsTogames_p2ChampionId", fields: [p2ChampionId], references: [id])
-  waywins                                 waywins?   @relation(fields: [waywinId], references: [id])
+model waywins{
+    id Int @id @default(autoincrement())
+    name String
 }
 
-model matchban {
-  gameId     Int
-  championId Int
-  playerId   Int
-
-  @@id([gameId, championId])
+model stages{
+    id Int @id @default(autoincrement())
+    name String
 }
 
-model matches {
-  id                                           Int           @id @default(autoincrement())
-  tournamentId                                 Int?
-  stageId                                      Int?
-  player1Id                                    Int?
-  player2Id                                    Int?
-  participants_matches_player1IdToparticipants participants? @relation("matches_player1IdToparticipants", fields: [player1Id], references: [id])
-  participants_matches_player2IdToparticipants participants? @relation("matches_player2IdToparticipants", fields: [player2Id], references: [id])
-  stages                                       stages?       @relation(fields: [stageId], references: [id])
-  tournaments                                  tournaments?  @relation(fields: [tournamentId], references: [id])
-  games                                        games[]
+model tournaments{
+    id Int @id @default(autoincrement())
+    name String
+    description String?
+    startDate DateTime
+    endDate DateTime?
+    createdAt DateTime @default(now())
+    matches matches[]
 }
 
-model matchesbans {
-  matchId    Int
-  championId Int
-  playerId   Int
-
-  @@id([matchId, championId])
+model matches{
+    id Int @id @default(autoincrement())
+    matchId Int 
+    duration Int @default(0)
+    stageId Int
+    stage stages @relation(fields: [stageId], references: [id])
+    waywinId Int
+    waywin waywins @relation(fields: [waywinId], references: [id])
+    tournamentId Int
+    tournament tournaments @relation(fields: [tournamentId], references: [id])
+    winningSide Boolean @default(false)
 }
 
-model participants {
-  id                                      Int       @id @default(autoincrement())
-  name                                    String    @default("")
-  rankId                                  Int?
-  signUpDate                              DateTime?
-  resignationDate                         DateTime?
-  ranks                                   ranks?    @relation(fields: [rankId], references: [id])
-  matches_matches_player1IdToparticipants matches[] @relation("matches_player1IdToparticipants")
-  matches_matches_player2IdToparticipants matches[] @relation("matches_player2IdToparticipants")
+model matches_players{
+    matchId Int
+    match matches @relation(fields: [matchId], references: [id])
+    playerId Int
+    player players @relation(fields: [playerId], references: [id])
+    cs Int @default(0)
+    championId Int
+    champion champions @relation(fields: [championId], references: [id])
+    side Boolean @default(false)
+
+    @@id([matchId, playerId])
 }
 
-model ranks {
-  id           Int            @id @default(autoincrement())
-  name         String         @default("")
-  participants participants[]
+model bans{
+    matchId Int
+    match matches @relation(fields: [matchId], references: [id])
+    playerId Int
+    player players @relation(fields: [playerId], references: [id])
+    championId Int
+    champion champions @relation(fields: [championId], references: [id])
+    
+    @@id([matchId, playerId])
 }
 
-model stages {
-  id      Int       @id @default(autoincrement())
-  name    String    @default("")
-  matches matches[]
+model players{
+    id Int @id @default(autoincrement())
+    name String
+    team String?
+    userId Int
+    user users @relation(fields: [userId], references: [id])
 }
 
-model tournaments {
-  id          Int       @id @default(autoincrement())
-  name        String    @default("")
-  description String    @default("")
-  startDate   DateTime
-  endDate     DateTime?
-  createdOn   DateTime  @default(now())
-  matches     matches[]
-}
-
-model waywins {
-  id    Int     @id @default(autoincrement())
-  name  String  @default("")
-  games games[]
+model users{
+    id Int @id @default(autoincrement())
+    name String
+    pass String
 }
