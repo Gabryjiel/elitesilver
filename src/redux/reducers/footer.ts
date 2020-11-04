@@ -20,6 +20,8 @@ export default function main(state = initialState, action: ActionType){
             return { ...state, description: action.payload};
         case TYPES.FOOTER_SET_TABS:
             return { ...state, tabs: action.payload};
+        case TYPES.FOOTER_SET_FOOTER:
+            return {...state, ...action.payload}
         default:
             return {...state};
     }

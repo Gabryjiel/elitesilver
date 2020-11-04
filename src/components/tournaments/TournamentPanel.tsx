@@ -21,7 +21,7 @@ function TournamentPanel({title, image, firstPlace, secondPlace, thirdPlace}: To
 }
 
 const mapStateToProps = (state:any) => {
-    const local = state.tournamentPanelReducer;
+    const local = state.tournamentPanel;
 
     return {
         title: local.title,

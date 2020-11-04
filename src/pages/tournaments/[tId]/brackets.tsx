@@ -24,19 +24,21 @@ function brackets({data, tournamentPanelData, id}: Props){
 }
 
 export async function getStaticPaths(){
-    const result: Array<any> = await fetcher('tournaments/getAll');
+    const result: Array<any> = await fetcher('tournaments ');
     const paths = result.map(item => `/tournaments/${item.id.toString()}/brackets`);
     return { paths, fallback: true};
 }
 
 export const getStaticProps = wrapper.getStaticProps(async ({store, params}:any) => {
-    const res = await (await fetch(`http://localhost:3001/api/tournaments/${params.tId}/brackets`)).json();
-    const tournamentInfo = await fetcher(`tournaments/getById?id=${params.tId}`);
+    const { id } = params;
+
+    const res = await fetcher(`http://localhost:3001/api/tournaments/${id}`);
+    const tournamentInfo = await fetcher(`tournaments/getById?id=${id}`);
 
     store.dispatch(FooterActions.setTitle({content: 'Schemat' , href: ''}));
     store.dispatch(FooterActions.setSubtitle({content: tournamentInfo.name , href: `/tournaments/${tournamentInfo.id}`}));
     store.dispatch(FooterActions.setDescription({content: 'Turnieje', href: '/tournaments'}))
-    store.dispatch(FooterActions.setTabs(TournamentTabs(params.tId)));
+    store.dispatch(FooterActions.setTabs(TournamentTabs(id)));
 
     //store.dispatch(TournamentPanelActions.setImagePath(''));
     store.dispatch(TournamentPanelActions.setTitle(tournamentInfo.name));
@@ -47,7 +49,7 @@ export const getStaticProps = wrapper.getStaticProps(async ({store, params}:any)
     return{
         props: {
             data: res,
-            id: params.tId
+            id: id
         },
         revalidate: 1
     }

@@ -8,5 +8,5 @@ export default async function method(req: NextApiRequest, res: NextApiResponse){
     const result = await prisma.ranks.findMany();
     res.json(result);
 
-    console.log("ranks/getAll");
+    console.log("ranks ");
 };

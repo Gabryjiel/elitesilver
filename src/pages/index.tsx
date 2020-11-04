@@ -17,9 +17,6 @@ export default connect()(Home);
 
 export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:any) => {
 
-    const fetched = await fetch('http://localhost:3000/api/tournaments/getAll');
-    const payload = await fetched.json();
-
     store.dispatch(FooterActions.setTitle({content: '' , href: ''}));
     store.dispatch(FooterActions.setSubtitle({content: '' , href: ``}));
     store.dispatch(FooterActions.setDescription({content: '' , href: ``}));

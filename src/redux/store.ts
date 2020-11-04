@@ -2,12 +2,14 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { HYDRATE, createWrapper } from 'next-redux-wrapper';
 import thunkMiddleware from 'redux-thunk';
 
-import footerReducer from './reducers/footerReducer';
-import tournamentPanelReducer from './reducers/tournamentPanelReducer';
+import footer from './reducers/footer';
+import tournamentPanel from './reducers/tournamentPanel';
+import table from './reducers/table';
 
 const combinedReducer = combineReducers({
-  footerReducer,
-  tournamentPanelReducer
+  footer,
+  tournamentPanel,
+  table
 })
 
 const bindMiddleware = (middleware: any) => {

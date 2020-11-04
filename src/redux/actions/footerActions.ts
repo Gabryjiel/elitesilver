@@ -24,3 +24,8 @@ export const setTabs = (tabs: Array<ContentHref>) => ({
     type: TYPES.FOOTER_SET_TABS,
     payload: tabs
 });
+
+export const setFooter = (data: any) => ({
+    type: TYPES.FOOTER_SET_FOOTER,
+    payload: data
+})

@@ -20,15 +20,10 @@ function MatchesIndex({data}: Props){
         router.push(path);
     };
 
-    const header = ['Zawodnik 1', 'Zawodnik 2', 'Wynik', 'Turniej', 'Faza'];
-    const rows = data.map(match => ({
-        content: [match.player1Id, match.player2Id, '1:0', match.tournamentId, match.stageId],
-        href: `/matches/${match.id}`
-    }));
 
     return(
         <AppContainer>
-            <Table header={header} rows={rows} goTo={goTo} />
+            <Table goTo={goTo} />
             <Footer />
         </AppContainer>
     )
@@ -37,14 +32,27 @@ function MatchesIndex({data}: Props){
 export default connect()(MatchesIndex);
 
 export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:any) => {
-    //const res = await (await fetch(`http://localhost:3001/api/matches`)).json();
+    const result: Array<any> = await fetcher('matches');
 
-    const result = await fetcher('matches/getAll');
+    const tableActions = await import('../../redux/actions/tableActions');
+    const footerActions = await import('../../redux/actions/footerActions');
 
-    store.dispatch(FooterActions.setTitle({content: ' ' , href: ''}));
-    store.dispatch(FooterActions.setSubtitle({content: 'Mecze' , href: ``}));
-    store.dispatch(FooterActions.setDescription({content: 'Przeglądaj' , href: `/tournaments`}));
-    store.dispatch(FooterActions.setTabs(TournamentIndex));
+    store.dispatch(footerActions.setFooter({
+        title: {content: ' ', href: ''},
+        subtitle: {content: 'Mecze', href: ''},
+        description: {content: 'Przeglądaj', href: ''},
+        tabs: TournamentIndex
+    }))
+
+    const rows = result.map(({id, player1, player2, waywin, stage}) => ({
+        content: [id, stage?.name, player1?.name, player2?.name, `${player1?.score} : ${player2?.score}`, waywin?.name, player1?.champion?.name || null, player2?.champion?.name || null],
+        href: `matches/${id}`
+    }))
+
+    store.dispatch(tableActions.setTable({
+        headers: ['Id', 'Faza', 'Gracz 1', 'Gracz 2', 'Wynik', 'Sposób', 'Bohater 1', 'Bohater 2'],
+        rows: rows
+    }))
 
     return{
       props: {

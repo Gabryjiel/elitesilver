@@ -22,7 +22,7 @@ function Match(){
 export default connect()(Match);
 
 export async function getStaticPaths(){
-    const result: Array<any> = await fetcher('matches/getAll');
+    const result: Array<any> = await fetcher('matches ');
     const paths = result.map(match => `/matches/${match.id.toString()}`);
 
     return { paths, fallback: false };

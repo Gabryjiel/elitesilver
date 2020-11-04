@@ -20,15 +20,9 @@ function ChampionsIndex({data}: Props){
         router.push(path);
     };
 
-    const header = ['Nazwa', 'Ilość meczy', 'Winratio'];
-    const rows = data.map(item => ({
-        content: [item.name, '10', '50%'],
-        href: `/champions/${item.id}`
-    }));
-
     return(
         <AppContainer>
-            <Table header={header} rows={rows} goTo={goTo} />
+            <Table goTo={goTo} />
             <Footer />
         </AppContainer>
     )
@@ -37,12 +31,27 @@ function ChampionsIndex({data}: Props){
 export default connect()(ChampionsIndex);
 
 export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:any) => {
-    const result = await fetcher('champions/getAll');
-    
-    store.dispatch(FooterActions.setTitle({content: ' ' , href: ''}));
-    store.dispatch(FooterActions.setSubtitle({content: 'Postacie' , href: ''}));
-    store.dispatch(FooterActions.setDescription({content: 'Przeglądaj' , href: '/tournaments'}));
-    store.dispatch(FooterActions.setTabs(TournamentIndex));
+    const result: Array<any> = await fetcher('champions');
+
+    const tableActions = await import('../../redux/actions/tableActions');
+    const footerActions = await import('../../redux/actions/footerActions');
+
+    store.dispatch(footerActions.setFooter({
+        title: {content: ' ', href: ''},
+        subtitle: {content: 'Postacie', href: ''},
+        description: {content: 'Przeglądaj', href: ''},
+        tabs: TournamentIndex
+    }))
+
+    const rows = result.map(({id, name, avatar, profile, splash}) => ({
+        content: [id, name, avatar],
+        href: `champions/${id}`
+    }))
+
+    store.dispatch(tableActions.setTable({
+        headers: ['Id', 'Nazwa', 'Avatar'],
+        rows: rows
+    }))
 
     return{
       props: {

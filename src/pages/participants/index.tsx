@@ -2,7 +2,6 @@ import React, { MouseEvent } from 'react';
 import { connect } from 'react-redux';
 import { wrapper } from '../../redux/store';
 
-import * as FooterActions from '../../redux/actions/footerActions'
 import { TournamentIndex } from '../../components/footer/FooterTabsDefinitions';
 
 import Footer from "../../components/footer/Footer";
@@ -20,15 +19,10 @@ function ParticipantsIndex({data}: Props){
         router.push(path);
     };
 
-    const header = ['Pseudonim', 'Winratio', 'Ilość meczy', 'Najczęściej grane'];
-    const rows = data.map(item => ({
-        content: [item.name, '50%', 'brak', 'Lulu, Lux, Lucian'],
-        href: `/participants/${item.id}`
-    }));
-
     return(
         <AppContainer>
-            <Table header={header} rows={rows} goTo={goTo} />
+            <Table goTo={goTo} />
+
             <Footer />
         </AppContainer>
     )
@@ -36,13 +30,28 @@ function ParticipantsIndex({data}: Props){
 
 export default connect()(ParticipantsIndex);
 
-export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:any) => {
-    const result = await fetcher('participants/getAll');
+export const getStaticProps =  wrapper.getStaticProps( async ({ store }:any) => {
+    const result: Array<any> = await fetcher('participants');
 
-    store.dispatch(FooterActions.setTitle({content: ' ' , href: ''}));
-    store.dispatch(FooterActions.setSubtitle({content: 'Uczestnicy' , href: ``}));
-    store.dispatch(FooterActions.setDescription({content: 'Przeglądaj' , href: '/tournaments'}));
-    store.dispatch(FooterActions.setTabs(TournamentIndex));
+    const tableActions = await import('../../redux/actions/tableActions');
+    const footerActions = await import('../../redux/actions/footerActions');
+
+    store.dispatch(footerActions.setFooter({
+        title: {content: ' ', href: ''},
+        subtitle: {content: 'Zawodnicy', href: ''},
+        description: {content: 'Przeglądaj', href: ''},
+        tabs: TournamentIndex
+    }))
+
+    const rows = result.map(({id, name, rank, champions}: ParticipantsDTO) => ({
+        content: [id, name, rank?.name, champions?.map(champ => champ?.name).join(', ')],
+        href: `participants/${id}`
+    }))
+
+    store.dispatch(tableActions.setTable({
+        headers: ['id', 'name', 'rank', 'champions'],
+        rows: rows
+    }))
 
     return{
       props: {
@@ -50,6 +59,13 @@ export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:an
       }
     }
 });
+
+type ParticipantsDTO = {
+    id: number,
+    name: string,
+    rank: any,
+    champions: Array<any>
+}
 
 type Props = {
     data: Array<any>

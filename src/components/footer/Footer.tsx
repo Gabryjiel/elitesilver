@@ -30,7 +30,7 @@ function Footer({title, subtitle, description, tabs, image}: FooterProps){
 }
 
 const mapStateToProps = (state:any) => {
-    const local = state.footerReducer;
+    const local = state.footer;
 
     return {
         title: local.title,
