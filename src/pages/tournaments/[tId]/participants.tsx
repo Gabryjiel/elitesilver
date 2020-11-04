@@ -12,6 +12,7 @@ import AppContainer from '../../../components/style/AppContainer';
 import TournamentPanel from '../../../components/tournaments/TournamentPanel';
 import Footer from '../../../components/footer/Footer';
 import fetcher from '../../../utilities/fetcher';
+import Table from '../../../components/utils/Table';
 
 function participants({participants, id}: Props){
 
@@ -26,8 +27,9 @@ function participants({participants, id}: Props){
         <AppContainer>
 
             <TournamentPanel />
+            <Table goTo={goTo} />
 
-            <div id="participants" className="table-container">
+            {/* <div id="participants" className="table-container">
                 <div className="table-header">
                     <span className="table-row-flexed">Uczestnik</span>
                     <span>Ranga</span>
@@ -51,7 +53,7 @@ function participants({participants, id}: Props){
                         );
                     })}
                 </div>
-            </div>
+            </div> */}
 
             <Footer />
 
@@ -61,30 +63,50 @@ function participants({participants, id}: Props){
 
 export async function getStaticPaths(){
     const result: Array<any> = await fetcher('tournaments');
-    const paths = result.map(item => `/tournaments/${item.id.toString()}/brackets`);
-    return { paths, fallback: false};
+    const paths = result.map(item => `/tournaments/${item.id}/participants`);
+
+    return { paths, fallback: true};
 }
 
 export const getStaticProps = wrapper.getStaticProps(async ({store, params}:any) => {
-    const { id } = params;
+    const id = params.tId;
 
-    const res = await fetcher(`tournaments/${id}/participants`);
+    const result: Array<any> = await fetcher(`tournaments/${id}/participants`);
     const tournamentInfo = await fetcher(`tournaments/${id}`);
 
-    store.dispatch(FooterActions.setTitle({content: 'Uczestnicy' , href: ''}));
-    store.dispatch(FooterActions.setSubtitle({content: tournamentInfo.name , href: `/tournaments/${tournamentInfo.id}`}));
-    store.dispatch(FooterActions.setDescription({content: 'Turnieje', href: '/tournaments'}))
-    store.dispatch(FooterActions.setTabs(TournamentTabs(id)));
+    const tableActions = await import('../../../redux/actions/tableActions');
+    const footerActions = await import('../../../redux/actions/footerActions');
+    const tournamentPanel = await import('../../../redux/actions/tournamentPanelActions');
+    const TournamentTabs = await import('../../../components/footer/FooterTabsDefinitions');
+
+    store.dispatch(footerActions.setFooter({
+        title: {content: 'Uczestnicy', href: ''},
+        subtitle: {content: tournamentInfo.name, href: `/tournaments/${tournamentInfo.id}`},
+        description: {content: 'Turnieje', href: '/tournaments'},
+        tabs: TournamentTabs.TournamentTabs(id)
+    }))
 
     //store.dispatch(TournamentPanelActions.setImagePath(''));
-    store.dispatch(TournamentPanelActions.setTitle(tournamentInfo.name));
-    store.dispatch(TournamentPanelActions.setFirstPlace('Firster'));
-    store.dispatch(TournamentPanelActions.setSecondPlace('Seconder'));
-    store.dispatch(TournamentPanelActions.setThirdPlace('Thirder'));
+    store.dispatch(tournamentPanel.setTournamentPanel({
+        title: tournamentInfo.name,
+        firstPlace: 'Firster',
+        secondPlace: 'Seconder',
+        thirdPlace: 'Thirder'
+    }))
 
+    const rows = result.map(({id, name, rank, userId}) => ({
+        content: [userId, name, rank?.name],
+        href: `/users/${id}`
+    }))
+
+    store.dispatch(tableActions.setTable({
+        headers: ['Id', 'Pseudonim', 'Ranga'],
+        rows: rows
+    }))
+    
     return{
         props: {
-            participants: res,
+            participants: rows,
             id: id
         }
     }

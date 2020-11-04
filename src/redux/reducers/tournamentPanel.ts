@@ -20,6 +20,8 @@ export default function reducer(state = initialState, action: ActionType){
             return { ...state, secondPlace: action.payload};
         case TYPES.TOURNAMENT_PANEL_SET_THIRD_PLACE:
             return { ...state, thirdPlace: action.payload};
+        case TYPES.TOURNAMENT_PANEL_SET_TOURNAMENT_PANEL:
+            return { ...state, ...action.payload};
         default:
             return {...state};
     }

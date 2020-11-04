@@ -24,3 +24,8 @@ export const setThirdPlace = (thirdPlace: string) => ({
     type: TYPES.TOURNAMENT_PANEL_SET_THIRD_PLACE,
     payload: thirdPlace
 });
+
+export const setTournamentPanel = (data: any) => ({
+    type: TYPES.TOURNAMENT_PANEL_SET_TOURNAMENT_PANEL,
+    payload: data
+})

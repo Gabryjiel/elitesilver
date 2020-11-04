@@ -3,10 +3,6 @@ import { connect } from 'react-redux';
 import { wrapper } from '../../../redux/store';
 
 import Footer from '../../../components/footer/Footer';
-import { TournamentTabs } from '../../../components/footer/FooterTabsDefinitions';
-
-import * as FooterActions from '../../../redux/actions/footerActions';
-import * as TournamentPanelActions from '../../../redux/actions/tournamentPanelActions';
 
 import AppContainer from '../../../components/style/AppContainer';
 import TournamentPanel from '../../../components/tournaments/TournamentPanel';
@@ -24,27 +20,36 @@ function brackets({data, tournamentPanelData, id}: Props){
 }
 
 export async function getStaticPaths(){
-    const result: Array<any> = await fetcher('tournaments ');
-    const paths = result.map(item => `/tournaments/${item.id.toString()}/brackets`);
+    const result: Array<any> = await fetcher('tournaments');
+    const paths = result.map(item => `/tournaments/${item.id}/brackets`);
+
     return { paths, fallback: true};
 }
 
 export const getStaticProps = wrapper.getStaticProps(async ({store, params}:any) => {
-    const { id } = params;
+    const id = params.tId;
 
-    const res = await fetcher(`http://localhost:3001/api/tournaments/${id}`);
-    const tournamentInfo = await fetcher(`tournaments/getById?id=${id}`);
+    const res = await fetcher(`tournaments/${id}`);
+    const tournamentInfo = await fetcher(`tournaments/${id}`);
 
-    store.dispatch(FooterActions.setTitle({content: 'Schemat' , href: ''}));
-    store.dispatch(FooterActions.setSubtitle({content: tournamentInfo.name , href: `/tournaments/${tournamentInfo.id}`}));
-    store.dispatch(FooterActions.setDescription({content: 'Turnieje', href: '/tournaments'}))
-    store.dispatch(FooterActions.setTabs(TournamentTabs(id)));
+    const footerActions = await import('../../../redux/actions/footerActions');
+    const tournamentPanel = await import('../../../redux/actions/tournamentPanelActions');
+    const TournamentTabs = await import('../../../components/footer/FooterTabsDefinitions');
+
+    store.dispatch(footerActions.setFooter({
+        title: {content: 'Schemat', href: ''},
+        subtitle: {content: tournamentInfo.name, href: `/tournaments/${tournamentInfo.id}`},
+        description: {content: 'Turnieje', href: '/tournaments'},
+        tabs: TournamentTabs.TournamentTabs(id)
+    }))
 
     //store.dispatch(TournamentPanelActions.setImagePath(''));
-    store.dispatch(TournamentPanelActions.setTitle(tournamentInfo.name));
-    store.dispatch(TournamentPanelActions.setFirstPlace('Firster'));
-    store.dispatch(TournamentPanelActions.setSecondPlace('Seconder'));
-    store.dispatch(TournamentPanelActions.setThirdPlace('Thirder'));
+    store.dispatch(tournamentPanel.setTournamentPanel({
+        title: tournamentInfo.name,
+        firstPlace: 'Firster',
+        secondPlace: 'Seconder',
+        thirdPlace: 'Thirder'
+    }))
 
     return{
         props: {

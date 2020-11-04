@@ -13,8 +13,21 @@ export default async function main(req: NextApiRequest, res: NextApiResponse){
     const id = Number(req.query.tId);
 
     const matches = await prisma.matches.findMany({
-        include: {matches_players: {select: {player: true}}},
-        where: {tournamentId: id}
+        include: {
+            matches_players: {
+                include: {
+                    player: {
+                        include: {
+                            rank: true
+                        }
+                    }
+                }
+            }
+        },
+        where: {tournamentId: id},
+        orderBy: {
+            id: 'asc'
+        }
     })
 
     const map = matches.map(match => match.matches_players).flat().map(player => player.player);

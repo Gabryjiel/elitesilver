@@ -11,6 +11,7 @@ import AppContainer from '../../../components/style/AppContainer';
 import TournamentPanel from '../../../components/tournaments/TournamentPanel';
 import Footer from '../../../components/footer/Footer';
 import fetcher from '../../../utilities/fetcher';
+import Table from '../../../components/utils/Table';
 
 function matches({matches, id}: Props){
 
@@ -24,8 +25,8 @@ function matches({matches, id}: Props){
     return(
         <AppContainer>
             <TournamentPanel />
-
-            <div id="matches" className="table-container">
+            <Table goTo={goTo} />
+            {/* <div id="matches" className="table-container">
                 <div className="table-header">
                     <span className="table-row-flexed">Zwycięzca</span>
                     <span className="table-row-flexed">Przegrany</span>
@@ -50,7 +51,7 @@ function matches({matches, id}: Props){
                             </div>
                     )}
                 </div>
-            </div>
+            </div> */}
 
             <Footer />
         </AppContainer>
@@ -58,31 +59,51 @@ function matches({matches, id}: Props){
 }
 
 export async function getStaticPaths(){
-    const result: Array<any> = await fetcher('tournaments ');
-    const paths = result.map(item => `/tournaments/${item.id.toString()}/brackets`);
-    return { paths, fallback: false};
+    const result: Array<any> = await fetcher('tournaments');
+    const paths = result.map(item => `/tournaments/${item.id}/matches`);
+
+    return { paths, fallback: true};
 }
 
 export const getStaticProps = wrapper.getStaticProps(async ({store, params}:any) => {
-    const { id } = params;
+    const id = params.tId;
 
-    const res = await fetcher(`http://localhost:3001/api/tournaments/${id}/matches`);
+    const result: Array<any> = await fetcher(`tournaments/${id}/matches`);
     const tournamentInfo = await fetcher(`tournaments/${id}`);
 
-    store.dispatch(FooterActions.setTitle({content: 'Mecze' , href: `/tournaments/${tournamentInfo.id}/matches`}));
-    store.dispatch(FooterActions.setSubtitle({content: tournamentInfo.name , href: `/tournaments/${tournamentInfo.id}`}));
-    store.dispatch(FooterActions.setDescription({content: 'Turnieje', href: '/tournaments'}))
-    store.dispatch(FooterActions.setTabs(TournamentTabs(id)));
+    const tableActions = await import('../../../redux/actions/tableActions');
+    const footerActions = await import('../../../redux/actions/footerActions');
+    const tournamentPanel = await import('../../../redux/actions/tournamentPanelActions');
+    const TournamentTabs = await import('../../../components/footer/FooterTabsDefinitions');
+
+    store.dispatch(footerActions.setFooter({
+        title: {content: 'Mecze', href: ''},
+        subtitle: {content: tournamentInfo.name, href: `/tournaments/${tournamentInfo.id}`},
+        description: {content: 'Turnieje', href: '/tournaments'},
+        tabs: TournamentTabs.TournamentTabs(id)
+    }))
 
     //store.dispatch(TournamentPanelActions.setImagePath(''));
-    store.dispatch(TournamentPanelActions.setTitle(tournamentInfo.name));
-    store.dispatch(TournamentPanelActions.setFirstPlace('Firster'));
-    store.dispatch(TournamentPanelActions.setSecondPlace('Seconder'));
-    store.dispatch(TournamentPanelActions.setThirdPlace('Thirder'));
+    store.dispatch(tournamentPanel.setTournamentPanel({
+        title: tournamentInfo.name,
+        firstPlace: 'Firster',
+        secondPlace: 'Seconder',
+        thirdPlace: 'Thirder'
+    }))
+
+    const rows = result.map(({id, player1, player2, waywin, stage}) => ({
+        content: [id, stage?.name, player1?.name, player2?.name, `${player1?.score} : ${player2?.score}`, waywin?.name, player1?.champion?.name || null, player2?.champion?.name || null],
+        href: `/matches/${id}`
+    }))
+
+    store.dispatch(tableActions.setTable({
+        headers: ['Id', 'Faza', 'Gracz 1', 'Gracz 2', 'Wynik', 'Sposób', 'Bohater 1', 'Bohater 2'],
+        rows: rows
+    }))
     
     return{
         props: {
-            matches: res,
+            matches: rows,
             id: id
         }
     }
