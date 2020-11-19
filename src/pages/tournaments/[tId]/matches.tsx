@@ -2,11 +2,6 @@ import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 import { wrapper } from '../../../redux/store';
 
-import { TournamentTabs } from '../../../components/footer/FooterTabsDefinitions';
-
-import * as FooterActions from '../../../redux/actions/footerActions'
-import * as TournamentPanelActions from '../../../redux/actions/tournamentPanelActions';
-
 import AppContainer from '../../../components/style/AppContainer';
 import TournamentPanel from '../../../components/tournaments/TournamentPanel';
 import Footer from '../../../components/footer/Footer';

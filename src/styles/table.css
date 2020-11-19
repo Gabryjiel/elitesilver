@@ -4,37 +4,19 @@
     }
 }
 
-.table-container{
-    background-color: white;
+.table{
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     width: 100%;
-    height: 90%;
-}
-
-.table-header{
-    display: flex;
-    justify-content: space-around;
-    padding-top: 1vh;
-    padding-bottom: 1vh;
-    background-color: bisque;
-    border: 1px solid burlywood;
-    min-width: 8vh;
-}
-
-.table-header span{
-    text-align: start;
-    text-indent: 10px;
-    flex-basis: 0;
-    flex-grow: 1;
-    font-weight: bold;
 }
 
 .table-body{
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
     height: 86vh;
+    width: 90%;
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
@@ -50,12 +32,11 @@
 .table-row{
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
-    border-bottom: 1px;
-    border-style: solid;
-    border-color: black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
     overflow: hidden;
-    min-height: 6vh;
+    min-height: 3vh;
+    padding: 10px 0;
 }
 
 .table-row:hover{
@@ -63,17 +44,18 @@
     cursor: pointer;
 }
 
-.table-row div{
-    text-align: start;
-    text-indent: 10px;
+.table-row-item{
     flex-basis: 0;
     flex-grow: 1;
     overflow-x: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.table-row div::-webkit-scrollbar{
+.table-row-item::-webkit-scrollbar{
     display: none;
 }
 
@@ -86,12 +68,65 @@
     cursor: pointer;
 }
 
-.table-element span{
+.tournament{
     display: flex;
-    align-content: center;
-    padding: 10px 0;
+    flex-direction: row;
+    overflow: hidden;
+    height: 85px;
+    padding: 5px 0;
+    justify-content: space-between;
 }
 
-.table-element, .table-header span{
-    border: 1px solid black;
+.table-body .tournament:not(:last-child){
+    border-bottom: 1px solid black;
+}
+
+.tournament:hover{
+    background-color: aliceblue;
+    cursor: pointer;
+}
+
+.tournament-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 5px;
+}
+
+.tournament-title{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-weight: bolder;
+    width: 200px;
+}
+
+.tournament-date{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px
+}
+
+.tournament-status{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+}
+
+.tournament-players{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+}
+
+.torunament-hover:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.red{
+    color: darkred;
 }

@@ -1,4 +1,7 @@
-.trophy-gold::before, .trophy-silver::before, .trophy-bronze::before{
+.trophy-gold::before, 
+.trophy-silver::before, 
+.trophy-bronze::before, 
+.trophy::before{
     filter: sepia(1) saturate(5);
     content: "🏆  ";
     position: relative;
@@ -14,4 +17,31 @@
 
 .trophy-bronze::before{
     filter: brightness(0.5) hue-rotate(-40deg);
+}
+
+.trophy::before{
+    filter: brightness(0);
+    position: absolute;
+}
+
+.users::before{
+    filter: brightness(0);
+    content: "👤";
+    position: absolute;
+}
+
+.games span, .users span, .winner span, .calendar span{
+    margin-left: 26px;
+}
+
+.games::before{
+    filter: brightness(0);
+    content: "🎮";
+    position: absolute;
+}
+
+.calendar::before{
+    filter: grayscale() brightness(1);
+    position: absolute;
+    content: "📅";
 }

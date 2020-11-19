@@ -7,14 +7,14 @@ import TournamentsList from '../../components/tournaments/TournamentsList';
 
 import { TournamentIndex } from '../../components/footer/FooterTabsDefinitions';
 import fetcher from '../../utilities/fetcher';
-import { table } from 'console';
+import Table from '../../components/utils/Table';
 
 function Tournaments({data}: Props){
 
     return(
         <AppContainer>
             <TournamentsList data={data}/>
-
+            {/* <Table /> */}
             <Footer />
         </AppContainer>
     )
@@ -36,12 +36,12 @@ export const getStaticProps =  wrapper.getStaticProps( async ({store}: any) => {
     }))
 
     const rows = result.map(row => ({
-        content: [row.id, row.name, row.description, row.startDate, row.endDate, row.createdAt],
+        content: [row.name, row.startDate, row.endDate, row.noOfMatches, row.noOfPlayers],
         href: `tournaments/${row.id}`
     }))
 
     store.dispatch(tableActions.setTable({
-        headers: Object.keys(result[0]),
+        headers: ['Nazwa turnieju', 'Data rozpoczęcia', 'Data zakończenia', 'Liczba meczy', 'Liczba graczy'],
         rows: rows
     }))
 
