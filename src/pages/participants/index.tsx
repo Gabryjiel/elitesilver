@@ -9,6 +9,7 @@ import AppContainer from "../../components/style/AppContainer";
 import Table from '../../components/utils/Table';
 import { useRouter } from 'next/router';
 import fetcher from '../../utilities/fetcher';
+import ParticipantsList from '../../components/participants/ParticipantsList';
 
 function ParticipantsIndex({data}: Props){
 
@@ -21,8 +22,8 @@ function ParticipantsIndex({data}: Props){
 
     return(
         <AppContainer>
-            <Table goTo={goTo} />
-
+            {/* <Table goTo={goTo} /> */}
+            <ParticipantsList data={data}/>
             <Footer />
         </AppContainer>
     )
@@ -43,15 +44,15 @@ export const getStaticProps =  wrapper.getStaticProps( async ({ store }:any) => 
         tabs: TournamentIndex
     }))
 
-    const rows = result.map(({id, name, rank, champions}: ParticipantsDTO) => ({
-        content: [id, name, rank?.name, champions?.map(champ => champ?.name).join(', ')],
-        href: `participants/${id}`
-    }))
+    // const rows = result.map(({id, name, rank, champions}: ParticipantsDTO) => ({
+    //     content: [id, name, rank?.name, champions?.map(champ => champ?.name).join(', ')],
+    //     href: `participants/${id}`
+    // }))
 
-    store.dispatch(tableActions.setTable({
-        headers: ['id', 'name', 'rank', 'champions'],
-        rows: rows
-    }))
+    // store.dispatch(tableActions.setTable({
+    //     headers: ['id', 'name', 'rank', 'champions'],
+    //     rows: rows
+    // }))
 
     return{
       props: {

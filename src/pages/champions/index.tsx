@@ -10,6 +10,7 @@ import AppContainer from "../../components/style/AppContainer";
 import Table from '../../components/utils/Table';
 import { useRouter } from 'next/router';
 import fetcher from '../../utilities/fetcher';
+import ChampionsList from '../../components/champions/ChampionsList';
 
 function ChampionsIndex({data}: Props){
 
@@ -22,7 +23,8 @@ function ChampionsIndex({data}: Props){
 
     return(
         <AppContainer>
-            <Table goTo={goTo} />
+            {/* <Table goTo={goTo} /> */}
+            <ChampionsList data={data} />
             <Footer />
         </AppContainer>
     )
@@ -43,15 +45,15 @@ export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:an
         tabs: TournamentIndex
     }))
 
-    const rows = result.map(({id, name, avatar, profile, splash}) => ({
-        content: [id, name, avatar],
-        href: `champions/${id}`
-    }))
+    // const rows = result.map(({id, name, avatar, profile, splash}) => ({
+    //     content: [id, name, avatar],
+    //     href: `champions/${id}`
+    // }))
 
-    store.dispatch(tableActions.setTable({
-        headers: ['Id', 'Nazwa', 'Avatar'],
-        rows: rows
-    }))
+    // store.dispatch(tableActions.setTable({
+    //     headers: ['Id', 'Nazwa', 'Avatar'],
+    //     rows: rows
+    // }))
 
     return{
       props: {

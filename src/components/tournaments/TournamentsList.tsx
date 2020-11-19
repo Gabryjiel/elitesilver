@@ -1,16 +1,17 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { MouseEvent } from 'react';
-import TournamentCard from '../TournamentCard/TournamentCard';
 
-function TournamentsList({data}: TournamentsListProps){
+type TournamentsListProps = {
+    data: Array<any>
+};
+
+export default function TournamentsList({data}: TournamentsListProps){
 
     return(
-        <div className="table">
-            <div className="table-body">
+        <div className="tournament-list">
 
             {data.map(({id, name, noOfPlayers, noOfMatches, startDate, endDate}) =>
-                <div className="tournament" key={name}>
+                <div className="tournament-item list-item-normal" key={name}>
 
                     <Link href={`/tournaments/${id}`}>
                         <div className="tournament-logo">
@@ -34,17 +35,10 @@ function TournamentsList({data}: TournamentsListProps){
                         <div className="tournament-date">{`${startDate} - ${endDate}`}</div>
                     </Link>
                     
-                    <div className="tournament-status red">{"Zakończony"}</div>
+                    <div className={`tournament-status ${endDate && 'red'}`}>{"Zakończony"}</div>
                 </div>
             )}
 
             </div>
-        </div>
     );
-}
-
-export default TournamentsList;
-
-type TournamentsListProps = {
-    data: Array<any>
-}
+};

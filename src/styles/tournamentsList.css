@@ -1,83 +1,25 @@
-@media only screen and (max-width: 767px){
-    .table-container{
-        font-size: 12px;
-    }
-}
-
-.table{
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
-.table-body{
+.tournament-list{
     margin-top: 20px;
     display: flex;
+    align-items: center;
     flex-direction: column;
     overflow-y: scroll;
     height: 86vh;
+    width: 100%;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.tournament-item{
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
     width: 90%;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-.table-body::-webkit-scrollbar{
-    display: none;
-}
-
-.table-row-flexed{
-    flex-grow: 2 !important;
-}
-
-.table-row{
-    display: flex;
-    flex-direction: row;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    overflow: hidden;
-    min-height: 3vh;
-    padding: 10px 0;
-}
-
-.table-row:hover{
-    background-color: aliceblue;
-    cursor: pointer;
-}
-
-.table-row-item{
-    flex-basis: 0;
-    flex-grow: 1;
-    overflow-x: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.table-row-item::-webkit-scrollbar{
-    display: none;
-}
-
-.table-hoverable{
-    display: inline-block !important;
-}
-
-.table-hoverable:hover, .table-hoverable:active{
-    color: gray;
-    cursor: pointer;
-}
-
-.tournament{
-    display: flex;
-    flex-direction: row;
-    overflow: hidden;
-    height: 85px;
     padding: 5px 0;
     justify-content: space-between;
 }
 
-.table-body .tournament:not(:last-child){
+.tournament-list .tournament-item:not(:last-child){
     border-bottom: 1px solid black;
 }
 
@@ -131,4 +73,12 @@
 
 .red{
     color: darkred;
+}
+
+.list-item-small{
+    min-height: 50px;
+}
+
+.list-item-normal{
+    min-height: 85px;
 }

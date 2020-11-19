@@ -20,7 +20,7 @@ function Tournaments({data}: Props){
     )
 }
 
-export default connect()(Tournaments);
+export default Tournaments;
 
 export const getStaticProps =  wrapper.getStaticProps( async ({store}: any) => {
     const result: Array<any> = await fetcher('tournaments');
