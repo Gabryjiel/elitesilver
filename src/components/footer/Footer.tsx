@@ -22,8 +22,13 @@ function Footer({texts, tabs, image}: FooterProps){
 
 export default Footer;
 
-type FooterProps = {
-    texts: any[],
+interface FooterProps {
+    texts: FooterText[],
     tabs: Array<any>,
     image: string
 };
+
+interface FooterText {
+    text: string,
+    href: string
+}
