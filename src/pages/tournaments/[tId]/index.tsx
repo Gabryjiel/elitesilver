@@ -1,6 +1,3 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { wrapper } from '../../../redux/store';
 import { useRouter } from 'next/router';
 
 import AppContainer from '../../../components/style/AppContainer';
@@ -8,7 +5,10 @@ import TournamentPanel from '../../../components/tournaments/TournamentPanel';
 import Footer from '../../../components/footer/Footer';
 import fetcher from '../../../utilities/fetcher';
 
-function Tournaments({data, id}: Props) {
+function Tournaments({data, id, footer, tournamentPanel}: Props) {
+
+    const {texts, tabs, image} = footer;
+    const {title, places} = tournamentPanel
 
     const router = useRouter();
 
@@ -16,31 +16,22 @@ function Tournaments({data, id}: Props) {
         return <div>Loading...</div>
     }
 
-  data = {
-      banner: "https://i.redd.it/is8khj2rkcn51.jpg",
-      title: "Elite Silver",
-      description: "HERE IS DESCRIPTION",
-      first: "firster",
-      second: 'seconder',
-      third: 'thirder'
-  }
-
     return(
         <AppContainer>
-            <TournamentPanel />
+            <TournamentPanel title={title} places={places} image={''} />
 
             <div className=".tournament-container">
                 <div className="tournament-description">
-                    {data.description}
+                    {'desc'}
                 </div>
             </div>
 
-            <Footer />
+            <Footer texts={texts} tabs={tabs} image={image} />
         </AppContainer>
   )
 }
 
-export default connect()(Tournaments);
+export default Tournaments;
 
 export async function getStaticPaths(){
     const result: Array<any> = await fetcher('tournaments');
@@ -49,40 +40,37 @@ export async function getStaticPaths(){
     return { paths, fallback: true};
 }
 
-export const getStaticProps = wrapper.getStaticProps(async ({store, params}:any) => {
+export async function getStaticProps({ params }:any) {
     const id = params.tId;
 
     const tournamentInfo = await fetcher(`tournaments/${id}`);
-
-    const footerActions = await import('../../../redux/actions/footerActions');
-    const tournamentPanel = await import('../../../redux/actions/tournamentPanelActions');
     const TournamentTabs = await import('../../../components/footer/FooterTabsDefinitions');
-
-    store.dispatch(footerActions.setFooter({
-        title: {content: 'Info', href: ''},
-        subtitle: {content: tournamentInfo.name, href: ''},
-        description: {content: 'Turnieje', href: '/tournaments'},
-        tabs: TournamentTabs.TournamentTabs(id)
-    }))
-
-    //store.dispatch(TournamentPanelActions.setImagePath(''));
-    store.dispatch(tournamentPanel.setTournamentPanel({
-        title: tournamentInfo.name,
-        firstPlace: 'Firster',
-        secondPlace: 'Seconder',
-        thirdPlace: 'Thirder'
-    }))
 
     return{
         props: {
             data: tournamentInfo,
-            id: id
+            id: id,
+            footer: {
+                texts: [
+                    {text: 'Ogólne', href: ''},
+                    {text: tournamentInfo.name, href: `/tournaments/${tournamentInfo.id}`},
+                    {text: 'Turnieje', href: '/tournaments'},
+                ],
+                tabs: TournamentTabs.TournamentTabs(id),
+                image: ''
+            },
+            tournamentPanel: {
+                title: tournamentInfo.name,
+                places: ['Firster', 'Seconder', 'Thirder']
+            }
         },
         revalidate: 1
     }
-});
+};
 
 type Props = {
   data: any,
-  id: number
+  id: number,
+  footer: any,
+  tournamentPanel: any
 }

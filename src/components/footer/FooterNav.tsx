@@ -1,17 +1,21 @@
-import { MouseEvent } from "react";
+import Link from 'next/link';
 
-function FooterNav({info, goToPath}: FooterNavProps){
+function FooterNav({info}: FooterNavProps){
 
     return(
         <div className='footer-nav'>
 
-            <div className='footer-nav-tab' onClick={(event) => goToPath('/', event)}>
-                Strona główna
-            </div>
+            <Link href={'/'}>
+                <div className='footer-nav-tab'>
+                    Strona główna
+                </div>
+            </Link>
 
-            <div className='footer-nav-tab' onClick={(event) => goToPath('/tournaments', event)}>
-                Przeglądaj
-            </div>
+            <Link href={'/tournaments'}>
+                <div className='footer-nav-tab'>
+                    Przeglądaj
+                </div>
+            </Link>
 
             {/* <div className='contet-nav' onClick={(event) => goToPath('/', event)}>
                 Profil
@@ -24,6 +28,5 @@ function FooterNav({info, goToPath}: FooterNavProps){
 export default FooterNav;
 
 type FooterNavProps = {
-    info: Array<any>,
-    goToPath: (path: string, event?: MouseEvent) => void
+    info: Array<any>
 }

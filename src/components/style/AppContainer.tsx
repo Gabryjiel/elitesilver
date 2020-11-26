@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function AppContainer({children}: AppContainerProps){
     return(
         <div id="app-container">

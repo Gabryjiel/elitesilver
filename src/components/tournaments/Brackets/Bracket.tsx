@@ -1,4 +1,3 @@
-import React from 'react';
 import CanvasLine from "./CanvasLine";
 
 export default function Bracket({data}: Props){

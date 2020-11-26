@@ -1,4 +1,3 @@
-import React from 'react';
 import { MatchCard } from '../../../interfaces/global'
 
 export default function BracketItem({bluePlayer, redPlayer, blueScore, redScore}: MatchCard){

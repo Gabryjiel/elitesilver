@@ -1,22 +1,28 @@
-import { MouseEvent } from "react";
+import Link from 'next/link';
 
-function FooterBread({title, subtitle, description, image, goToPath}:FooterBreadProps){
+function FooterBread({title, subtitle, description, image}:FooterBreadProps){
     
     return(
         <div className='footer-main'>
             <div className="footer-main-bread">
 
-                <div onClick={(event) => goToPath(title.href, event)} className={`footer-main-title ${title.href && 'hoverable'}`}>
-                    {title.content}
-                </div>
+                <Link href={title.href}>
+                    <div className={`footer-main-title ${title.href && 'hoverable'}`}>
+                        {title.text}
+                    </div>
+                </Link>
 
-                <div onClick={(event) => goToPath(subtitle.href, event)} className={`footer-main-subtitle ${subtitle.href && 'hoverable'}`}>
-                    {subtitle.content}
-                </div>
+                <Link href={subtitle.href}>
+                    <div className={`footer-main-subtitle ${subtitle.href && 'hoverable'}`}>
+                        {subtitle.text}
+                    </div>
+                </Link>
 
-                <div onClick={(event) => goToPath(description.href, event)} className={`footer-main-description ${description.href && 'hoverable'}`}>
-                    {description.content}
-                </div>
+                <Link href={description.href}>
+                    <div className={`footer-main-description ${description.href && 'hoverable'}`}>
+                        {description.text}
+                    </div>
+                </Link>
 
             </div>
 
@@ -35,10 +41,9 @@ type FooterBreadProps = {
     subtitle: HrefContent,
     description: HrefContent,
     image: string,
-    goToPath: (path: string, event?: MouseEvent) => void
 };
 
 type HrefContent = {
     href: string,
-    content: string
+    text: string
 }

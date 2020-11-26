@@ -1,26 +1,30 @@
-import { connect } from 'react-redux';
-import { wrapper } from '../redux/store';
-import * as FooterActions from '../redux/actions/footerActions'
-
 import Footer from '../components/footer/Footer';
 import AppContainer from '../components/style/AppContainer';
 
-function Home() {
+function Home({footer}: any) {
+
     return (
         <AppContainer>
-            <Footer />
+            <Footer texts={footer.texts} tabs={footer.tabs} image={footer.image} />
         </AppContainer>
     )
 }
 
-export default connect()(Home);
+export default Home;
 
-export const getStaticProps =  wrapper.getStaticProps( async ({store, params}:any) => {
+export async function getStaticProps() {
 
-    store.dispatch(FooterActions.setTitle({content: '' , href: ''}));
-    store.dispatch(FooterActions.setSubtitle({content: '' , href: ``}));
-    store.dispatch(FooterActions.setDescription({content: '' , href: ``}));
-    store.dispatch(FooterActions.setTabs([]));
-
-    return;
-});
+    return {
+        props: {
+            footer: {
+                texts: [
+                    {text: '', href: ''},
+                    {text: '', href: ''},
+                    {text: '', href: ''}
+                ],
+                tabs: [],
+                image: ''
+            }
+        }
+    };
+};

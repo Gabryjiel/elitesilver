@@ -1,11 +1,10 @@
 import { AppProps } from 'next/app';
-import { wrapper } from '../redux/store';
 
 import '../styles/main.css'
 
-function MyApp({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />
   
 }
 
-export default wrapper.withRedux(MyApp);
+export default App;

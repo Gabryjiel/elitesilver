@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function TournamentTabs({path, goTo, id}: TournamentTabsProps){
 
     const tabs = [
