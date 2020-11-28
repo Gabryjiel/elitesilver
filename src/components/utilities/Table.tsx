@@ -3,12 +3,18 @@ import styled from 'styled-components';
 
 function Table({headers, rows}: TableProps) {
 
-    const h = ['Logo', 'Nazwa', 'Czas trwania', 'Status'];
-    const r = [
+    const h: TableItem[] = [
+        {content: 'Logo', classes: ''},
+        {content: 'Nazwa', classes: ''},
+        {content: 'Czas trwania', classes: ''},
+        {content: 'Status', classes: ''}
+    ];
+
+    const r: TableItem[][] = [
         [
             {content: 'https://placeimg.com/250/250/tech', href: ''},
             {content: 'Elite Bronze', href: '/tournaments/1'},
-            {content: '3 days', href: ''},
+            {content: '3 days', href: '', classes: 'red'},
             {content: 'Zakończony', href: ''}
         ],
         [
@@ -30,7 +36,7 @@ function Table({headers, rows}: TableProps) {
             <TableHeader>
 
                 {h?.map(item => (
-                    <TableHeaderItem>{ item }</TableHeaderItem>
+                    <TableHeaderItem><span className={item.classes}>{ item.content }</span></TableHeaderItem>
                 ))}
 
             </TableHeader>
@@ -42,14 +48,17 @@ function Table({headers, rows}: TableProps) {
 
                         {row?.map(item => (
                             <TableRowItem>
-                                {item.content.includes('http') ?
-                                    (<Link href={item.href}>
-                                        <TableRowImage src={item.content} alt={'image'} />
-                                    </Link>)
-                                    :
-                                    (<Link href={item.href}>
-                                        <span>{item.content}</span>
-                                    </Link>)}
+                                <Link href={item.href || ''}>
+                                    {item.content.includes('http') ?
+                                        <div className={item.classes} style={{height: '100%'}}>
+                                            <TableRowImage src={item.content} alt={'image'} />
+                                        </div>
+                                        :
+                                        <span className={item.classes}>
+                                            {item.content}
+                                        </span>
+                                    }
+                                </Link>
                             </TableRowItem>
                         ))}
 
@@ -64,9 +73,15 @@ function Table({headers, rows}: TableProps) {
 export default Table;
 
 interface TableProps{
-    headers?: string[],
-    rows?: any[],
+    headers?: TableItem[],
+    rows?: TableItem[],
     style?: any
+}
+
+interface TableItem{
+    content: string,
+    href?: string,
+    classes?: string
 }
 
 const TableContainer = styled.table({
