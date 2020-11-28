@@ -21,7 +21,10 @@ export default async function method(req: NextApiRequest, res: NextApiResponse){
         name: item.name,
         picks: item.matches_players.length,
         wins: item.matches_players.filter(match => match.side = match.match.winningSide).length,
-        bans: item.bans.length
+        bans: item.bans.length,
+        splash: `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${item.name}_0.jpg`,
+        profile: `http://ddragon.leagueoflegends.com/cdn/img/champion/loading/${item.name}_0.jpg`,
+        avatar: `http://ddragon.leagueoflegends.com/cdn/10.24.1/img/champion/${item.name}.png`
     })).sort((a, b) => a.name > b.name ? 1 : -1);
 
     res.json(response);
