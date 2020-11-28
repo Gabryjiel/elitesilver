@@ -4,36 +4,51 @@ import Footer from "../../components/footer/Footer";
 import AppContainer from "../../components/style/AppContainer";
 
 import fetcher from '../../utilities/fetcher';
-import ParticipantsList from '../../components/participants/ParticipantsList';
+import Table from '../../components/utilities/Table';
 
-function ParticipantsIndex({data, footer}: Props){
+function Participants({table, footer}: Props){
+
+    const {texts, tabs, image} = footer;
+    const {headers, rows} = table;
 
     return(
         <AppContainer>
-            <ParticipantsList data={data}/>
-            <Footer texts={footer.texts} tabs={footer.tabs} image={footer.image}/>
+            <Table headers={headers} rows={rows} />
+            <Footer texts={texts} tabs={tabs} image={image} />
         </AppContainer>
     )
 }
 
-export default ParticipantsIndex;
+export default Participants;
 
 export async function getStaticProps() {
-    const result: Array<any> = await fetcher('participants');
+    const result: any[] = await fetcher('participants');
 
-    // const rows = result.map(({id, name, rank, champions}: ParticipantsDTO) => ({
-    //     content: [id, name, rank?.name, champions?.map(champ => champ?.name).join(', ')],
-    //     href: `participants/${id}`
-    // }))
+    const headers = [
+        {content: 'Pseudonim'},
+        {content: 'Liczba meczy'},
+        {content: 'Liczba wygranych'},
+        {content: 'Procent zwycięstw'}
+    ];
 
-    // store.dispatch(tableActions.setTable({
-    //     headers: ['id', 'name', 'rank', 'champions'],
-    //     rows: rows
-    // }))
+    const rows = result.map(({id, name, noOfMatches, noOfWins}) => {
+        
+        let winRatio = `${(noOfWins/noOfMatches*100).toFixed(0).toString()} %`;
+
+        return [
+            {content: name, href: `/participants/${id}`},
+            {content: noOfMatches, href: `participants/${id}/matches`},
+            {content: noOfWins, href: `participants/${id}/matches`},
+            {content: winRatio, href: `participants/${id}/matches`}
+        ]
+    });
 
     return{
       props: {
-        data: result,
+        table: {
+            headers,
+            rows
+        },
         footer: {
             texts: [
                 {text: '', href: ''},
@@ -47,6 +62,6 @@ export async function getStaticProps() {
 };
 
 type Props = {
-    data: Array<any>,
+    table: any,
     footer: any
 };

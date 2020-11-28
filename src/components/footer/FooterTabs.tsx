@@ -10,8 +10,8 @@ function FooterTabs({tabs, location}: FooterTabsProps){
                 const isActive = location === tab.href;
 
                 return(
-                    <Link href={tab.href}>
-                        <div key={tab.content} className={`${isActive ? 'footer-tabs-active' : ''}`}>
+                    <Link href={tab.href} key={`Tab no ${idx}`}>
+                        <div className={`${isActive ? 'footer-tabs-active' : ''}`}>
                             {tab.content}
                         </div>
                     </Link>

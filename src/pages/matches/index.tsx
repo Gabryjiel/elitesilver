@@ -3,12 +3,17 @@ import { TournamentIndex } from '../../components/footer/FooterTabsDefinitions';
 import Footer from "../../components/footer/Footer";
 import AppContainer from "../../components/style/AppContainer";
 import fetcher from '../../utilities/fetcher';
+import Table from '../../components/utilities/Table';
 
-function MatchesIndex({data, footer}: Props){
+function MatchesIndex({table, footer}: Props){
+
+    const {headers, rows} = table;
+    const {texts, tabs, image} = footer;
 
     return(
         <AppContainer>
-            <Footer texts={footer.texts} tabs={footer.tabs} image={footer.image} />
+            <Table headers={headers} rows={rows} />
+            <Footer texts={texts} tabs={tabs} image={image} />
         </AppContainer>
     )
 }
@@ -18,20 +23,32 @@ export default MatchesIndex;
 export async function getStaticProps() {
     const result: Array<any> = await fetcher('matches');
 
+    const headers = [
+        {content: 'Zawodnik 1'},
+        {content: 'Zawodnik 2'},
+        {content: 'Wynik'},
+        {content: 'Sposób'},
+        {content: 'Bohater 1'},
+        {content: 'Bohater 2'},
+        {content: 'Faza'}
+    ];
 
-    const rows = result.map(({id, player1, player2, waywin, stage}) => ({
-        content: [id, stage?.name, player1?.name, player2?.name, `${player1?.score} : ${player2?.score}`, waywin?.name, player1?.champion?.name || null, player2?.champion?.name || null],
-        href: `matches/${id}`
-    }))
-
-    // store.dispatch(tableActions.setTable({
-    //     headers: ['Id', 'Faza', 'Gracz 1', 'Gracz 2', 'Wynik', 'Sposób', 'Bohater 1', 'Bohater 2'],
-    //     rows: rows
-    // }))
+    const rows = result.map(({id, player1, player2, waywin, stage}) => [
+        {content: player1?.name, href: `/participants/${player1.id}`, classes: 'blue'},
+        {content: player2?.name, href: `/participants/${player2.id}`, classes: 'red'},
+        {content: `${player1?.score} : ${player2?.score}`, href: `/matches/${id}`, classes: `${player1?.score > player2?.score ? 'blue' : 'red'}`},
+        {content: waywin.name, href: `/matches/${id}`},
+        {content: player1?.champion?.name || null, href: `/champions/${player1?.champion?.id}`, classes: 'blue'},
+        {content: player2?.champion?.name || null, href: `/champions/${player2?.champion?.id}`, classes: 'red'},
+        {content: stage?.name}
+    ]);
 
     return{
       props: {
-        data: result,
+        table: {
+            headers,
+            rows
+        },
         footer: {
             texts: [
                 {text: '', href: ''},
@@ -46,6 +63,6 @@ export async function getStaticProps() {
 };
 
 type Props = {
-    data: Array<any>,
+    table: any,
     footer: any
 }

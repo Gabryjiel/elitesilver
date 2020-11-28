@@ -1,16 +1,19 @@
 import Footer from '../../components/footer/Footer';
 import AppContainer from '../../components/style/AppContainer';
-import TournamentsList from '../../components/tournaments/TournamentsList';
 
 import { TournamentIndex } from '../../components/footer/FooterTabsDefinitions';
 import fetcher from '../../utilities/fetcher';
+import Table from '../../components/utilities/Table';
 
-function Tournaments({data, footer}: Props){
+function Tournaments({table, footer}: Props){
+
+    const {texts, tabs, image} = footer;
+    const {rows} = table;
 
     return(
         <AppContainer>
-            <TournamentsList data={data}/>
-            <Footer texts={footer.texts} tabs={footer.tabs} image={footer.image} />
+            <Table rows={rows} />
+            <Footer texts={texts} tabs={tabs} image={image} />
         </AppContainer>
     )
 }
@@ -20,14 +23,19 @@ export default Tournaments;
 export async function getStaticProps() {
     const result: Array<any> = await fetcher('tournaments');
 
-    const rows = result.map(row => ({
-        content: [row.name, row.startDate, row.endDate, row.noOfMatches, row.noOfPlayers],
-        href: `tournaments/${row.id}`
-    }))
+    const rows = result.map(tournament => [
+        {content: 'https://placeimg.com/250/250/tech', href: ''},
+        {content: tournament.name, href: `/tournaments/${tournament.id}`},
+        {content: tournament.noOfMatches, href: `/tournaments/${tournament.id}/matches`},
+        {content: tournament.noOfPlayers, href: `/tournaments/${tournament.id}/participants`},
+        {content: `${tournament.startDate} - ${tournament.endDate}`, href: ''}
+    ]);
 
     return{
       props: {
-        data: result,
+        table: {
+            rows
+        }, 
         footer: {
             texts: [
                 {text: '', href: ''},
@@ -43,6 +51,6 @@ export async function getStaticProps() {
 };
 
 type Props = {
-    data: any,
+    table: any,
     footer: any
 }
