@@ -71,10 +71,6 @@
     cursor: pointer;
 }
 
-.red{
-    color: darkred;
-}
-
 .list-item-small{
     min-height: 50px;
 }

@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import styled from 'styled-components';
 
 import FooterNav from './FooterNav';
 import FooterTabs from './FooterTabs';
@@ -10,13 +11,13 @@ function Footer({texts, tabs, image}: FooterProps){
     const location = useRouter().asPath;
 
     return(
-        <div className='footer-container'>
+        <FooterContainer>
 
             <FooterNav info={[]} />
             {tabs.length > 0 && <FooterTabs tabs={tabs} location={location} />}
             {title.text && <FooterBread title={title} subtitle={subtitle} description={description} image={image} />}
 
-        </div>    
+        </FooterContainer>    
     );
 }
 
@@ -32,3 +33,11 @@ interface FooterText {
     text: string,
     href: string
 }
+
+const FooterContainer = styled.div({
+    display: "flex",
+    justifyContent: "space-between",
+    height: "10vh",
+    width: "100%",
+    zIndex: 10
+})

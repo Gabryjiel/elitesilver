@@ -69,34 +69,39 @@ const TableContainer = styled.table({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    overflowX: 'hidden',
-    overflowY: 'scroll',
     tableLayout: 'fixed',
     fontSize: '1.2vw'
 });
 
 const TableHeader = styled.thead({
+    position: "fixed",
+    top: 0,
     display: 'flex',
     width: '100vw',
-    height: '5%',
+    height: '5vh',
     backgroundColor: 'bisque',
     justifyContent: 'space-around',
-    padding: '0 10vw'
+    padding: '0 5vw'
 });
 
 const TableHeaderItem = styled.th({
     display: 'flex',
     height: '100%',
     flexGrow: 1,
+    flexBasis: 0,
     justifyContent: 'flex-start',
     alignItems: 'center'
 });
 
 const TableBody = styled.tbody({
     display: 'flex',
+    position: "fixed",
+    top: "5%",
     width: '90vw',
-    height: '95%',
-    flexDirection: "column"
+    height: '85vh',
+    flexDirection: "column",
+    overflowY: "scroll",
+    scrollbarWidth: "none"
 });
 
 const TableHeaderRow = styled.tr({
@@ -129,6 +134,12 @@ const TableRowItem = styled.td({
     'span:hover': {
         cursor: 'pointer',
         textDecoration: 'underline'
+    },
+    ".blue": {
+        color: 'darkblue'
+    },
+    ".red": {
+        color: 'darkred'
     }
 });
 

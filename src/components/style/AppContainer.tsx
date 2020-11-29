@@ -1,8 +1,10 @@
+import styled from 'styled-components';
+
 function AppContainer({children}: AppContainerProps){
     return(
-        <div id="app-container">
+        <AppWrapper>
             {children}
-        </div>
+        </AppWrapper>
     )
 }
 
@@ -11,3 +13,7 @@ export default AppContainer;
 type AppContainerProps = {
     children: React.ReactNode
 }
+
+const AppWrapper = styled.div({
+
+})
