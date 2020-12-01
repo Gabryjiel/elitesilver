@@ -10,7 +10,7 @@
     flex-basis: 0;
 }
 
-.footer-main, .footer-nav, .footer-tabs{
+.footer-main, .footer-nav{
     border-top: 1px solid black;
     background-color: bisque;
 }
@@ -21,14 +21,6 @@
     place-content: center;
     place-items: center;
     text-align: center;
-    border-right: 1px solid black;
-}
-
-.footer-tabs{
-    display: flex;
-    max-width: 60vw;
-    justify-content: center;
-    border-left: 1px solid black;
     border-right: 1px solid black;
 }
 
@@ -88,26 +80,6 @@
 
 .footer-main-description{
     font-size: small;
-}
-
-.footer-tabs div{
-    display: flex;
-    place-items: center;
-    place-content: center;
-    flex-basis: 0;
-    flex-grow: 1;
-    width: 10vw;
-    font-size: large;
-}
-
-.footer-tabs div:not(.footer-tabs-active):hover{
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-.footer-tabs-active{
-    color: red;
-    background-color: bisque !important;
 }
 
 .footer-nav div{
