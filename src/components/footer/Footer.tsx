@@ -34,7 +34,7 @@ interface FooterText {
     href: string
 }
 
-const FooterContainer = styled.div({
+const FooterContainer = styled.footer({
     display: "flex",
     justifyContent: "space-between",
     height: "10vh",

@@ -1,36 +1,40 @@
 import Link from 'next/link';
+import styled from 'styled-components';
 
 function FooterBread({title, subtitle, description, image}:FooterBreadProps){
     
     return(
-        <div className='footer-main'>
-            <div className="footer-main-bread">
+        <FooterBreadContainer>
+            <FooterBreadTexts>
 
-                <Link href={title.href}>
-                    <div className={`footer-main-title ${title.href && 'hoverable'}`}>
-                        {title.text}
-                    </div>
-                </Link>
+                {title && 
+                    <Link href={title.href}>
+                        <FooterBreadText>
+                            {title.text}
+                        </FooterBreadText>
+                    </Link>}
 
-                <Link href={subtitle.href}>
-                    <div className={`footer-main-subtitle ${subtitle.href && 'hoverable'}`}>
-                        {subtitle.text}
-                    </div>
-                </Link>
+                {subtitle && 
+                    <Link href={subtitle.href}>
+                        <FooterBreadText>
+                            {subtitle.text}
+                        </FooterBreadText>
+                    </Link>}
 
-                <Link href={description.href}>
-                    <div className={`footer-main-description ${description.href && 'hoverable'}`}>
-                        {description.text}
-                    </div>
-                </Link>
+                {description && 
+                    <Link href={description.href}>
+                        <FooterBreadText>
+                            {description.text}
+                        </FooterBreadText>
+                    </Link>}
 
-            </div>
+            </FooterBreadTexts>
 
-            <div className='footer-main-logo'>
+            <FooterBreadLogo>
                 <img src={image} />
-            </div>
+            </FooterBreadLogo>
 
-        </div>
+        </FooterBreadContainer>
     )
 }
 
@@ -47,3 +51,49 @@ type HrefContent = {
     href: string,
     text: string
 }
+
+const FooterBreadContainer = styled.div({
+    display: "flex",
+    width: "20vw",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    borderLeft: "1px solid black",
+    borderTop: "1px solid black",
+    backgroundColor: "bisque"
+})
+
+const FooterBreadTexts = styled.div({
+    display: "flex",
+    flexDirection: "column",
+    width: "70%",
+    textAlign: "end"
+})
+
+const FooterBreadLogo = styled.div({
+    minWidth: "25%",
+    maxWidth: "25%",
+    height: "70%",
+    margin: "0 5px",
+    "img": {
+        display: "block",
+        objectFit: "cover",
+        width: "100%",
+        height: "100%",
+        margin: 0,
+        padding: 0,
+        cursor: "pointer"
+    }
+})
+
+const FooterBreadText = styled.div({
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+    fontSize: "medium",
+    color: "black",
+    "&:hover": {
+        cursor: "pointer",
+        textDecoration: "underline"
+    }
+})
